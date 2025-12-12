@@ -105,8 +105,8 @@ export default function VideoCard({ video }) {
                       aria-label="Enable video interaction"
                       onClick={() => setInteractive(true)}
                       className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full flex items-center justify-center"
-                      style={{ width: 56, height: 56, border: 'none' }}
-                    >
+                      style={{ width: 56, height: 56, border: 'none', touchAction: 'manipulation' }}
+                      >
                       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 5v14l11-7z" fill="currentColor" />
                       </svg>
@@ -129,7 +129,7 @@ export default function VideoCard({ video }) {
                     aria-label="Enable video interaction"
                     onClick={() => setInteractive(true)}
                     className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full flex items-center justify-center"
-                    style={{ width: 56, height: 56, border: 'none' }}
+                    style={{ width: 56, height: 56, border: 'none', touchAction: 'manipulation' }}
                   >
                     <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M8 5v14l11-7z" fill="currentColor" />
