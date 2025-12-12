@@ -1,6 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function VideoCard({ video }) {
+  const [interactive, setInteractive] = useState(false)
+
   useEffect(() => {
     if (video.platform === 'tiktok') {
       // Load TikTok embed script to parse blockquote embeds.
@@ -97,23 +99,50 @@ export default function VideoCard({ video }) {
         <h3 className="font-semibold text-lg mb-2 h-12 overflow-hidden leading-tight">{video.title}</h3>
         <div className="w-full">
             {video.platform === 'youtube' ? (
-              <div className="relative w-full" style={{ paddingTop: '177.78%' }}>
-                <iframe
-                  src={`https://www.youtube.com/embed/${video.id}`}
-                  title={video.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute top-0 left-0 w-full h-full"
-                />
-              </div>
+                <div className="relative w-full" style={{ paddingTop: '177.78%' }}>
+                  {!interactive && (
+                    <button
+                      aria-label="Enable video interaction"
+                      onClick={() => setInteractive(true)}
+                      className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full flex items-center justify-center"
+                      style={{ width: 56, height: 56, border: 'none', touchAction: 'manipulation' }}
+                      >
+                      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z" fill="currentColor" />
+                      </svg>
+                    </button>
+                  )}
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video.id}`}
+                    title={video.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className={`absolute top-0 left-0 w-full h-full ${interactive ? '' : 'pointer-events-none'}`}
+                  />
+                </div>
           ) : video.platform === 'tiktok' && video.embedHtml ? (
             <div className="flex justify-center">
-              <div
-                className="tiktok-embed-wrapper"
-                data-video-id={video.id}
-                dangerouslySetInnerHTML={{ __html: video.embedHtml }}
-              />
+              <div className="relative w-full max-w-md">
+                {!interactive && (
+                  <button
+                    aria-label="Enable video interaction"
+                    onClick={() => setInteractive(true)}
+                    className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full flex items-center justify-center"
+                    style={{ width: 56, height: 56, border: 'none', touchAction: 'manipulation' }}
+                  >
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 5v14l11-7z" fill="currentColor" />
+                    </svg>
+                  </button>
+                )}
+                <div
+                  className="tiktok-embed-wrapper"
+                  data-video-id={video.id}
+                  style={{ pointerEvents: interactive ? 'auto' : 'none' }}
+                  dangerouslySetInnerHTML={{ __html: video.embedHtml }}
+                />
+              </div>
             </div>
           ) : (
             <a

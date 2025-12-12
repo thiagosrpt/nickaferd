@@ -14,6 +14,11 @@ export default function VideoCarousel({ videos = [], platform = '' }) {
       slidesPerView={1}
       navigation={{ prevEl: '.swiper-button-prev-custom', nextEl: '.swiper-button-next-custom' }}
       pagination={{ clickable: true }}
+      touchEventsTarget="wrapper"
+      touchStartPreventDefault={false}
+      touchStartForcePreventDefault={false}
+      simulateTouch={true}
+      allowTouchMove={true}
       breakpoints={{
         640: { slidesPerView: 1 },
         768: { slidesPerView: 2 },
