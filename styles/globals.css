@@ -17,6 +17,16 @@ body {
   max-width: 1100px;
 }
 
+main {
+    background: linear-gradient(280deg,
+    var(--section-a) 0%,
+    var(--section-a) 40%,
+    color-mix(in srgb, var(--section-a) 75%, var(--section-c) 25%) 55%,
+    color-mix(in srgb, var(--section-a) 55%, var(--header-bg) 45%) 75%,
+    color-mix(in srgb, var(--section-b) 65%, var(--header-bg) 35%) 100%
+  );
+}
+
 /* Swiper navigation: white circle with blue border, blue chevron; fills blue on hover */
 .swiper-button-next,
 .swiper-button-prev {
@@ -34,6 +44,11 @@ body {
   padding: 0;
 }
 
+.section-shadow {
+  box-shadow: -2px 1px 10px 2px rgba(0,0,0,0.59);
+  -webkit-box-shadow: -2px 1px 10px 2px rgba(0,0,0,0.59);
+  -moz-box-shadow: -2px 1px 10px 2px rgba(0,0,0,0.59);
+}
 
 
 /* white chevron on hover */
@@ -76,14 +91,7 @@ body {
 
 /* Top section gradient: emphasize --section-a while blending others */
 .section-top, .section-c {
-  /* Keep --section-a predominant, then blend out smoothly into section-c, header-bg and section-b */
-  background: linear-gradient(315deg,
-    var(--section-a) 0%,
-    var(--section-a) 40%,
-    color-mix(in srgb, var(--section-a) 75%, var(--section-c) 25%) 55%,
-    color-mix(in srgb, var(--section-a) 55%, var(--header-bg) 45%) 75%,
-    color-mix(in srgb, var(--section-b) 65%, var(--header-bg) 35%) 100%
-  );
+   background-color: none
 }
 
 /* Base typography and link colors according to requested scheme */
@@ -91,6 +99,7 @@ html, body, #__next { height: 100%; }
 body {
   color: var(--brand-text);
 }
+
 
 h1, h2, h3, h4, h5 { color: var(--brand-title); }
 

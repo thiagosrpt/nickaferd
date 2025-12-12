@@ -48,7 +48,7 @@ export default function Home() {
         </section>
 
         {/* Content section — section color B */}
-        <section id="content" className="bg-[#f8d481] py-12">
+        <section id="content" className="bg-[#f8d481] py-12 section-shadow">
           <div className="container mx-auto px-4">
             <header className="mb-8 text-center">
               <h2 className="text-3xl font-semibold">Content</h2>
@@ -234,7 +234,7 @@ export default function Home() {
         </section>
 
         {/* Contact section — bottom (full-height on small devices, centered) */}
-        <section id="contact" className="bg-[var(--header-bg)] min-h-screen flex items-center">
+        <section id="contact" className="bg-[var(--header-bg)] min-h-screen flex items-center section-shadow">
           <div className="container mx-auto px-4 text-center h-full flex flex-col items-center justify-center">
             <header className="mb-6">
               <h2 className="text-3xl font-semibold">Contact</h2>
