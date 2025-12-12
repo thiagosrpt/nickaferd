@@ -232,6 +232,36 @@ export default function Home() {
             </section>
           </div>
         </section>
+
+        {/* Contact section — bottom (full-height on small devices, centered) */}
+        <section id="contact" className="bg-[var(--header-bg)] min-h-screen flex items-center">
+          <div className="container mx-auto px-4 text-center h-full flex flex-col items-center justify-center">
+            <header className="mb-6">
+              <h2 className="text-3xl font-semibold">Contact</h2>
+              <p className="mt-3 text-sm text-gray-600">Get in touch via TikTok or email.</p>
+            </header>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="https://www.tiktok.com/@nickaferd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#06b6d4] text-white text-sm hover:bg-[#05a6bf]"
+                aria-label="Direct message on TikTok"
+              >
+                Direct Message on TikTok
+              </a>
+
+              <a
+                href="mailto:nickaferd@gmail.com"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-gray-800 text-white text-sm hover:bg-gray-700"
+                aria-label="Send email"
+              >
+                nickaferd@gmail.com
+              </a>
+            </div>
+          </div>
+        </section>
       </main>
     </>
   )
