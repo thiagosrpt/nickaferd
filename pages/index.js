@@ -66,10 +66,9 @@ export default function Home() {
                     className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#06b6d4] text-white text-sm hover:bg-[#05a6bf]"
                     aria-label="Open TikTok channel in new tab"
                   >
+                    <i className="bi-tiktok"></i>
                     Channel
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <i className="bi-arrow-right"></i>
                   </a>
                 </div>
                 <VideoCarousel videos={videos.filter((v) => v.platform === 'tiktok')} platform="tiktok" />
@@ -85,10 +84,9 @@ export default function Home() {
                     className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#C95353] text-white text-sm hover:bg-[#b04444]"
                     aria-label="Open YouTube channel in new tab"
                   >
+                    <i className="bi-youtube"></i>
                     Channel
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <i className="bi-arrow-right"></i>
                   </a>
                 </div>
                 <VideoCarousel videos={videos.filter((v) => v.platform === 'youtube')} platform="youtube" />
@@ -107,7 +105,7 @@ export default function Home() {
 
             <section className="grid grid-cols-1 gap-6">
               {/* TikTok block */}
-              <article className="bg-white shadow rounded p-6">
+              <article className="bg-white shadow rounded-xl p-6">
                 <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-3">
                   <i className="bi-tiktok text-[#06b6d4]"></i>
                   <span>TikTok</span>
@@ -170,7 +168,7 @@ export default function Home() {
               </article>
 
               {/* YouTube block */}
-              <article className="bg-white shadow rounded p-6">
+              <article className="bg-white shadow rounded-xl p-6">
                   <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-3">
                   <i className="bi-youtube text-red-600"></i>
                   <span>YouTube</span>
@@ -242,6 +240,7 @@ export default function Home() {
             </header>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              
               <a
                 href="https://www.tiktok.com/@nickaferd"
                 target="_blank"
@@ -249,6 +248,7 @@ export default function Home() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#06b6d4] text-white text-sm hover:bg-[#05a6bf]"
                 aria-label="Direct message on TikTok"
               >
+                <i className="bi-tiktok"></i>
                 Direct Message on TikTok
               </a>
 
@@ -257,6 +257,7 @@ export default function Home() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-gray-800 text-white text-sm hover:bg-gray-700"
                 aria-label="Send email"
               >
+                <i className="bi-envelope"></i>
                 nickaferd@gmail.com
               </a>
             </div>
