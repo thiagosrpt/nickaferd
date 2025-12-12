@@ -109,7 +109,7 @@ export default function Home() {
               {/* TikTok block */}
               <article className="bg-white shadow rounded p-6">
                 <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-3">
-                  <img src="https://upload.wikimedia.org/wikipedia/en/6/69/TikTok_logo.svg" alt="TikTok" className="w-6 h-6" />
+                  <i className="bi-tiktok text-[#06b6d4]"></i>
                   <span>TikTok</span>
                 </h2>
 
@@ -171,8 +171,8 @@ export default function Home() {
 
               {/* YouTube block */}
               <article className="bg-white shadow rounded p-6">
-                <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-3">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube" className="w-6 h-6" />
+                  <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-3">
+                  <i className="bi-youtube text-red-600"></i>
                   <span>YouTube</span>
                 </h2>
 
