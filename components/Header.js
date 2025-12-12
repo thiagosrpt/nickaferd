@@ -21,7 +21,7 @@ export default function Header() {
   }, [])
 
   return (
-    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b">
+    <header className="sticky top-0 z-30 bg-[var(--header-bg)] backdrop-blur border-b shadow-2xs">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="font-bold text-lg">
           Nickaferd
@@ -61,7 +61,7 @@ export default function Header() {
           />
 
           <div
-            className={`md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform ${open ? 'translate-x-0' : 'translate-x-full'}`}
+            className={`md:hidden fixed top-0 right-0 h-full w-64 bg-[var(--header-bg)] shadow-lg z-50 transform transition-transform ${open ? 'translate-x-0' : 'translate-x-full'}`}
             role="dialog"
             aria-modal="true"
           >

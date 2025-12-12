@@ -20,11 +20,11 @@ export default function Home() {
 
       <main className="min-h-screen scroll-smooth">
         {/* Top intro — section color A */}
-        <section id="top" className="bg-[#db8ade] py-16">
+        <section id="top" className="section-top py-16">
           <div className="container mx-auto px-4 flex items-start justify-between">
             <div className="flex-1">
               <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden flex-shrink-0 mx-auto md:mx-0">
+                <div className="w-[230px] h-[230px] rounded-full overflow-hidden flex-shrink-0 mx-auto md:mx-0">
                   <img
                     src="/images/profile_image_transparent.png"
                     alt="Portrait"
@@ -33,10 +33,13 @@ export default function Home() {
                 </div>
 
                 <div className="text-center md:text-left">
-                  <h1 className="text-4xl md:text-5xl font-bold">Hi, I’m Petr — content creator</h1>
+                  <h1 className="text-4xl md:text-5xl font-bold">Hi, I’m Nick</h1>
                   <p className="mt-3 text-lg max-w-2xl">
-                    I create short-form videos about travel, entertainment and theme-park culture. I focus on engaging,
-                    informative content that resonates across TikTok and YouTube Shorts.
+                    I create fun, informative, and sometimes chaotic content all about theme parks — especially Disney. Theme parks have become a recent passion of mine, and I’ve fallen in love with everything from the rides and food to the history, design, and tiny details most people miss.
+
+                    I genuinely love creating content and sharing that excitement with others. Whether I’m breaking down park secrets, geeking out over Imagineering, or just having fun in the parks, everything here comes from curiosity, good vibes, and a real love for the experience.
+
+                    If you love Disney, travel, or theme park culture — welcome to the NickaFam ✨
                   </p>
                 </div>
               </div>
@@ -95,7 +98,7 @@ export default function Home() {
         </section>
 
         {/* Audience section moved from pages/audience.js */}
-        <section id="audience" className="bg-[#cdf5eb] py-12">
+        <section id="audience" className="section-c py-12">
           <div className="container mx-auto px-4">
             <header className="mb-8 text-center">
               <h2 className="text-3xl font-semibold">Audience</h2>
