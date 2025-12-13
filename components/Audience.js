@@ -126,8 +126,8 @@ export default function Audience() {
           animateNumber('tiktokViews',4000000,1500,'compact')
           animateNumber('tiktokEngagement',30,1000,'integer')
           animateNumber('youtubeFollowers',1300,1200,'compact')
-          animateNumber('youtubeViews',1500000,1400,'compact')
-          animateNumber('youtubeEngagement',20,1000,'integer')
+          animateNumber('youtubeViews',2300000,1400,'compact')
+          animateNumber('youtubeEngagement',50,1000,'integer')
           window._audienceCharts._ran = true
         } catch (e) { console.warn('Audience animation failed', e) }
       }
@@ -232,7 +232,7 @@ export default function Audience() {
 
               <div className="text-center">
                 <div className="text-5xl font-extrabold text-[#06b6d4]">
-                  <span id="tiktokPeakConcurrentViewers">0</span>%
+                  <span id="tiktokPeakConcurrentViewers">0</span>
                 </div>
                 <div className="text-md text-gray-600">
                   Peak Concurrent Live Viewers
@@ -304,7 +304,7 @@ export default function Audience() {
                 Interests
               </h3>
               <ul className="badge-list">
-                <li className="badge badge--tiktok">Merchadising</li>
+                <li className="badge badge--tiktok">Merchandising</li>
                 <li className="badge badge--tiktok">Theme Parks</li>
                 <li className="badge badge--tiktok">
                   Travel &amp; Hotel Stays
