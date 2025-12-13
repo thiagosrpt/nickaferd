@@ -1,10 +1,13 @@
 import Head from 'next/head'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Audience from '../components/Audience'
 import VideoCarousel from '../components/VideoCarousel'
 import videos from '../data/videos'
 
 export default function Home() {
+  const [desktopVideoLoaded, setDesktopVideoLoaded] = useState(false)
+  const [mobileVideoLoaded, setMobileVideoLoaded] = useState(false)
+
   useEffect(() => {
     // Initialize charts when audience section is present
     if (typeof window !== 'undefined' && typeof window.initAudienceCharts === 'function') {
@@ -50,28 +53,52 @@ export default function Home() {
         {/* Video section — autoplay cover videos */}
         <section id="video" className="relative w-full overflow-hidden">
           {/* Desktop video - shows on wider screens (768px+) */}
-          <video
-            className="hidden md:block w-full h-auto"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="/images/image-cover-video.jpg"
-          >
-            <source src="/images/cover-video-desktop.mp4" type="video/mp4" />
-          </video>
+          <div className="hidden md:block relative">
+            {!desktopVideoLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <div className="w-64 h-1 bg-gray-300 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-500 rounded-full animate-loading-bar"></div>
+                </div>
+              </div>
+            )}
+            <video
+              className={`w-full h-auto xl:h-[600px] xl:object-cover transition-opacity duration-500 ${desktopVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster="/images/image-cover-video.jpg"
+              onPlaying={() => setDesktopVideoLoaded(true)}
+              onCanPlay={() => setDesktopVideoLoaded(true)}
+            >
+              <source src="/images/cover-video-desktop.mp4" type="video/mp4" />
+            </video>
+          </div>
 
           {/* Mobile video - shows on narrower screens */}
-          <video
-            className="block md:hidden w-full h-auto"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="/images/image-cover-video.jpg"
-          >
-            <source src="/images/cover-video-mobile.mp4" type="video/mp4" />
-          </video>
+          <div className="block md:hidden relative">
+            {!mobileVideoLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <div className="w-64 h-1 bg-gray-300 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-500 rounded-full animate-loading-bar"></div>
+                </div>
+              </div>
+            )}
+            <video
+              className={`w-full h-auto transition-opacity duration-500 ${mobileVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster="/images/image-cover-video.jpg"
+              onPlaying={() => setMobileVideoLoaded(true)}
+              onCanPlay={() => setMobileVideoLoaded(true)}
+            >
+              <source src="/images/cover-video-mobile.mp4" type="video/mp4" />
+            </video>
+          </div>
         </section>
 
         {/* Audience section — section color B moved from pages/audience.js */}
