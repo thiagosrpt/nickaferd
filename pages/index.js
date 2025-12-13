@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Portfolio — Videos</title>
+        <title>Nickaferd</title>
         <meta name="description" content="Portfolio of videos from social channels" />
       </Head>
 
