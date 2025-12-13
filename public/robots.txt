@@ -1,0 +1,16 @@
+# Block all crawlers by default
+User-agent: *
+Disallow: /
+
+# Allow only Google crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Googlebot-Video
+Allow: /
