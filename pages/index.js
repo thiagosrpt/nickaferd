@@ -111,22 +111,39 @@ export default function Home() {
                   <span>TikTok</span>
                 </h2>
 
-                {/* Top numbers row */}
+                {/* Top Live Metrics row */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                  <div className="text-center">
+                    <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokDailyLiveWatchers">0</span>+</div>
+                    <div className="text-md text-gray-600">Avg Daily Live Viewers</div>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokActiveViewers">0</span></div>
+                    <div className="text-md text-gray-600">Monthly Live Viewers</div>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokPeakConcurrentViewers">0</span>%</div>
+                    <div className="text-md text-gray-600">Peak Concurrent Live Viewers</div>
+                  </div>
+                </div>
+
+                {/* Top Short-Form Videos Metrics row */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                   <div className="text-center">
                     <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokFollowers">0</span></div>
-                    <div className="text-lg text-gray-600">Followers</div>
+                    <div className="text-md text-gray-600">Followers</div>
                   </div>
 
                   <div className="text-center">
                     <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokViews">0</span></div>
-                    <div className="text-lg text-gray-600">Views</div>
+                    <div className="text-md text-gray-600">Views</div>
                   </div>
 
                   <div className="text-center">
                     <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokEngagement">0</span>%</div>
-                    <div className="text-lg text-gray-600">Engagement</div>
-                    <div className="text-xs text-gray-600">Like, Comments, Share, 5-Sec Retention % Rates</div>
+                    <div className="text-md text-gray-600">Engaged Views</div>
                   </div>
                 </div>
 
@@ -159,7 +176,7 @@ export default function Home() {
                 <div className="mt-6">
                   <h3 className="text-lg font-semibold mb-2 text-center">Interests</h3>
                   <ul className="list-disc list-inside text-center space-y-1">
-                    <li>Disney Merchadising</li>
+                    <li>Merchadising</li>
                     <li>Theme Parks</li>
                     <li>Travel &amp; Hotel Stays</li>
                     <li>Entertainment</li>
@@ -188,8 +205,7 @@ export default function Home() {
 
                   <div className="text-center">
                     <div className="text-5xl font-extrabold text-[#C95353]"><span id="youtubeEngagement">0</span>%</div>
-                    <div className="text-lg text-gray-600">Engagement</div>
-                    <div className="text-xs text-gray-600">Like, Comments, Share, 5-Sec Retention % Rates</div>
+                    <div className="text-lg text-gray-600">Engaged Views</div>
                   </div>
                 </div>
 
@@ -358,42 +374,42 @@ if (typeof window !== 'undefined') {
       window._audienceCharts = window._audienceCharts || {}
 
       const youtubeGenderCtx = document.getElementById('youtubeGender')
-      const yg = createDoughnutPlaceholder(youtubeGenderCtx, ['Male', 'Female'], [45, 55], ['#C95353', '#94a3b8'], '60%')
+      const yg = createDoughnutPlaceholder(youtubeGenderCtx, ['Male', 'Female'], [40, 60], ['#C95353', '#94a3b8'], '60%')
       if (yg) {
         window._audienceCharts.youtubeGender = yg
         console.debug && console.debug('[initAudienceCharts] created youtubeGender')
       }
 
       const tiktokGenderCtx = document.getElementById('tiktokGender')
-      const tg = createDoughnutPlaceholder(tiktokGenderCtx, ['Male', 'Female'], [34, 66], ['#06b6d4', '#fb7185'], '60%')
+      const tg = createDoughnutPlaceholder(tiktokGenderCtx, ['Male', 'Female'], [40, 60], ['#06b6d4', '#fb7185'], '60%')
       if (tg) {
         window._audienceCharts.tiktokGender = tg
         console.debug && console.debug('[initAudienceCharts] created tiktokGender')
       }
 
       const tiktokAudienceCtx = document.getElementById('tiktokAudience')
-      const ta = createDoughnutPlaceholder(tiktokAudienceCtx, ['USA', 'Canada', 'UK', 'Others'], [80, 10, 5, 5], ['#06b6d4', '#00A0C4', '#fb7185', '#94a3b8'], '50%')
+      const ta = createDoughnutPlaceholder(tiktokAudienceCtx, ['USA', 'Canada', 'Australia', 'UK', 'Others'], [81.2, 5.7, 4.4, 2.4, 6.3], ['#06b6d4', '#00A0C4', '#fb7185', '#94a3b8', '#222'], '50%')
       if (ta) {
         window._audienceCharts.tiktokAudience = ta
         console.debug && console.debug('[initAudienceCharts] created tiktokAudience')
       }
 
       const youtubeAudienceCtx = document.getElementById('youtubeAudience')
-      const ya = createDoughnutPlaceholder(youtubeAudienceCtx, ['United States', 'Others'], [36, 64], ['#1f7ced', '#94a3b8'], '50%')
+      const ya = createDoughnutPlaceholder(youtubeAudienceCtx, ['United States', 'UK', 'Others'], [38, 4, 58], ['#1f7ced', '#94a3b8', '#C95353'], '50%')
       if (ya) {
         window._audienceCharts.youtubeAudience = ya
         console.debug && console.debug('[initAudienceCharts] created youtubeAudience')
       }
 
       const tiktokAgeCtx = document.getElementById('tiktokAge')
-      const tiktokAge = createBarPlaceholder(tiktokAgeCtx, ['13–17', '18–24', '25–34', '35–44', '45–54', '55–64', '65+'], [6.1, 18.4, 33.8, 23.5, 11.9, 4.3, 2.1], '#06b6d4')
+      const tiktokAge = createBarPlaceholder(tiktokAgeCtx, ['18–24', '25–34', '35–44', '45–54', '55+'], [10.1, 26.1, 32.6, 18.9, 12.2], '#06b6d4')
       if (tiktokAge) {
         window._audienceCharts.tiktokAge = tiktokAge
         console.debug && console.debug('[initAudienceCharts] created tiktokAge')
       }
 
       const youtubeAgeCtx = document.getElementById('youtubeAge')
-      const youtubeAge = createBarPlaceholder(youtubeAgeCtx, ['13–17', '18–24', '25–34', '35–44', '45–54', '55–64', '65+'], [6.1, 18.4, 33.8, 23.5, 11.9, 4.3, 2.1], '#C95353')
+      const youtubeAge = createBarPlaceholder(youtubeAgeCtx, ['13–17', '18–24', '25–34', '35–44', '45–54', '55–64', '65+'], [6.5, 20.1, 36.1, 21.7, 10.1, 3.7, 1.9], '#C95353')
       if (youtubeAge) {
         window._audienceCharts.youtubeAge = youtubeAge
         console.debug && console.debug('[initAudienceCharts] created youtubeAge')
@@ -416,12 +432,15 @@ if (typeof window !== 'undefined') {
 
           // Animate numbers
           animateNumber('tiktokFollowers', 40000, 1400, 'compact')
-          animateNumber('tiktokViews', 4000000, 1500, 'compact')
-          animateNumber('tiktokEngagement', 30, 1000, 'integer')
+          animateNumber('tiktokViews', 7000000, 1500, 'compact')
+          animateNumber('tiktokEngagement', 40, 1000, 'integer')
+          animateNumber('tiktokDailyLiveWatchers', 300, 1000, 'compact')
+          animateNumber('tiktokActiveViewers', 25000, 1500, 'compact')
+          animateNumber('tiktokPeakConcurrentViewers', 7200, 1000, 'compact')
 
           animateNumber('youtubeFollowers', 1300, 1200, 'compact')
-          animateNumber('youtubeViews', 1500000, 1400, 'compact')
-          animateNumber('youtubeEngagement', 20, 1000, 'integer')
+          animateNumber('youtubeViews', 2300000, 1400, 'compact')
+          animateNumber('youtubeEngagement', 50, 1000, 'integer')
 
           window._audienceCharts._ran = true
         } catch (e) {
