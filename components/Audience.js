@@ -2,211 +2,390 @@ import React, { useEffect } from "react";
 
 export default function Audience() {
   useEffect(() => {
-    if (typeof window === "undefined") return
+    if (typeof window === "undefined") return;
 
-    let observers = []
+    let observers = [];
 
     const loadChartJs = async () => {
-      const src = 'https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js'
-      if (window.Chart) return window.Chart
+      const src = "https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js";
+      if (window.Chart) return window.Chart;
       if (!document.querySelector(`script[src="${src}"]`)) {
-        const s = document.createElement('script')
-        s.src = src
-        s.async = true
-        document.head.appendChild(s)
-        await new Promise((res) => (s.onload = res))
+        const s = document.createElement("script");
+        s.src = src;
+        s.async = true;
+        document.head.appendChild(s);
+        await new Promise((res) => (s.onload = res));
       } else {
         await new Promise((res) => {
-          const existing = document.querySelector(`script[src="${src}"]`)
-          if (existing && existing.complete) return res()
-          existing && existing.addEventListener('load', res)
-        })
+          const existing = document.querySelector(`script[src="${src}"]`);
+          if (existing && existing.complete) return res();
+          existing && existing.addEventListener("load", res);
+        });
       }
-      return window.Chart
-    }
+      return window.Chart;
+    };
 
     const formatCompact = (n) => {
-      if (n >= 1000000) return (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1).replace(/\.0$/, '') + 'M'
-      if (n >= 1000) return (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1).replace(/\.0$/, '') + 'k'
-      return String(n)
-    }
+      if (n >= 1000000)
+        return (
+          (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1).replace(/\.0$/, "") +
+          "M"
+        );
+      if (n >= 1000)
+        return (
+          (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1).replace(/\.0$/, "") + "k"
+        );
+      return String(n);
+    };
 
-    const animateNumber = (id, target, duration = 1200, format = 'compact') => {
-      const el = document.getElementById(id)
-      if (!el) return
-      const start = Number(el.getAttribute('data-start') || 0) || 0
-      const startTime = performance.now()
-      const raf = window.requestAnimationFrame.bind(window)
-      const caf = window.cancelAnimationFrame.bind(window)
-      let rafId = null
+    const animateNumber = (id, target, duration = 1200, format = "compact") => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const start = Number(el.getAttribute("data-start") || 0) || 0;
+      const startTime = performance.now();
+      const raf = window.requestAnimationFrame.bind(window);
+      const caf = window.cancelAnimationFrame.bind(window);
+      let rafId = null;
 
       const tick = (now) => {
-        const t = Math.min((now - startTime) / duration, 1)
-        const value = Math.round(start + (target - start) * t)
-        el.textContent = format === 'compact' ? formatCompact(value) : String(Math.round(value))
-        if (t < 1) rafId = raf(tick)
-      }
+        const t = Math.min((now - startTime) / duration, 1);
+        const value = Math.round(start + (target - start) * t);
+        el.textContent =
+          format === "compact"
+            ? formatCompact(value)
+            : String(Math.round(value));
+        if (t < 1) rafId = raf(tick);
+      };
 
-      rafId = raf(tick)
+      rafId = raf(tick);
 
       // Ensure we always finish (iOS may throttle RAF). Force final value after duration+100ms
       const finTimeout = setTimeout(() => {
         try {
-          const final = format === 'compact' ? formatCompact(target) : String(Math.round(target))
-          if (el.textContent !== final) el.textContent = final
+          const final =
+            format === "compact"
+              ? formatCompact(target)
+              : String(Math.round(target));
+          if (el.textContent !== final) el.textContent = final;
         } catch (e) {}
-        try { if (rafId) caf(rafId) } catch (e) {}
-      }, duration + 120)
+        try {
+          if (rafId) caf(rafId);
+        } catch (e) {}
+      }, duration + 120);
 
       // Return a canceler in case caller wants to stop it (not used currently)
-      return () => { try { clearTimeout(finTimeout); if (rafId) caf(rafId) } catch (e) {} }
-    }
+      return () => {
+        try {
+          clearTimeout(finTimeout);
+          if (rafId) caf(rafId);
+        } catch (e) {}
+      };
+    };
 
     // Create zeroed placeholder charts and store them on window._audienceCharts
-    const createDoughnutPlaceholder = (Chart, canvas, labels, data, colors, cutout = '60%') => {
-      if (!canvas || !(canvas instanceof HTMLCanvasElement)) return null
-      try { const existing = Chart.getChart(canvas); if (existing) existing.destroy() } catch (e) {}
-      const initial = data.map(() => 0)
+    const createDoughnutPlaceholder = (
+      Chart,
+      canvas,
+      labels,
+      data,
+      colors,
+      cutout = "60%"
+    ) => {
+      if (!canvas || !(canvas instanceof HTMLCanvasElement)) return null;
+      try {
+        const existing = Chart.getChart(canvas);
+        if (existing) existing.destroy();
+      } catch (e) {}
+      const initial = data.map(() => 0);
       const cfg = {
-        type: 'doughnut',
-        data: { labels, datasets: [{ data: initial, backgroundColor: colors, borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout, animation: { duration: 900, easing: 'easeInOutCubic' }, plugins: { legend: { position: 'bottom' } } },
-      }
-      const chart = new Chart(canvas.getContext('2d'), cfg)
-      return { chart, target: data }
-    }
+        type: "doughnut",
+        data: {
+          labels,
+          datasets: [
+            { data: initial, backgroundColor: colors, borderWidth: 0 },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout,
+          animation: { duration: 900, easing: "easeInOutCubic" },
+          plugins: { legend: { position: "bottom" } },
+        },
+      };
+      const chart = new Chart(canvas.getContext("2d"), cfg);
+      return { chart, target: data };
+    };
 
     const createBarPlaceholder = (Chart, canvas, labels, target, color) => {
-      if (!canvas || !(canvas instanceof HTMLCanvasElement)) return null
-      try { const existing = Chart.getChart(canvas); if (existing) existing.destroy() } catch (e) {}
+      if (!canvas || !(canvas instanceof HTMLCanvasElement)) return null;
+      try {
+        const existing = Chart.getChart(canvas);
+        if (existing) existing.destroy();
+      } catch (e) {}
       const cfg = {
-        type: 'bar',
-        data: { labels, datasets: [{ label: 'Percent', data: labels.map(() => 0), backgroundColor: color }] },
-        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, animation: { duration: 1000, easing: 'easeInOutCubic' }, scales: { x: { beginAtZero: true, max: 40, display: false }, y: { grid: { display: false, drawBorder: false }, ticks: { display: true, font: { size: 12 } } } }, plugins: { legend: { display: false } } },
-      }
-      const chart = new Chart(canvas.getContext('2d'), cfg)
-      return { chart, target }
-    }
+        type: "bar",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Percent",
+              data: labels.map(() => 0),
+              backgroundColor: color,
+            },
+          ],
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 1000, easing: "easeInOutCubic" },
+          scales: {
+            x: { beginAtZero: true, max: 40, display: false },
+            y: {
+              grid: { display: false, drawBorder: false },
+              ticks: { display: true, font: { size: 12 } },
+            },
+          },
+          plugins: { legend: { display: false } },
+        },
+      };
+      const chart = new Chart(canvas.getContext("2d"), cfg);
+      return { chart, target };
+    };
 
     const setupCharts = async () => {
-      const Chart = await loadChartJs()
-      if (!Chart) return
+      const Chart = await loadChartJs();
+      if (!Chart) return;
 
-      window._audienceCharts = window._audienceCharts || {}
+      window._audienceCharts = window._audienceCharts || {};
 
       // build placeholders
-      const setIf = (key, v) => { if (v) window._audienceCharts[key] = v }
-      setIf('tiktokGender', createDoughnutPlaceholder(Chart, document.getElementById('tiktokGender'), ['Male','Female'], [40,60], ['#06b6d4','#fb7185'], '60%'))
-      setIf('tiktokAudience', createDoughnutPlaceholder(Chart, document.getElementById('tiktokAudience'), ['USA','Canada','UK','Others'], [80,10,5,5], ['#06b6d4','#00A0C4','#fb7185','#94a3b8'], '50%'))
-      setIf('tiktokAge', createBarPlaceholder(Chart, document.getElementById('tiktokAge'), ['13–17','18–24','25–34','35–44','45–54','55–64','65+'], [6.1,18.4,33.8,23.5,11.9,4.3,2.1], '#06b6d4'))
+      const setIf = (key, v) => {
+        if (v) window._audienceCharts[key] = v;
+      };
+      setIf(
+        "tiktokGender",
+        createDoughnutPlaceholder(
+          Chart,
+          document.getElementById("tiktokGender"),
+          ["Male", "Female"],
+          [40, 60],
+          ["#06b6d4", "#fb7185"],
+          "60%"
+        )
+      );
+      setIf(
+        "tiktokAudience",
+        createDoughnutPlaceholder(
+          Chart,
+          document.getElementById("tiktokAudience"),
+          ["USA", "Canada", "UK", "Others"],
+          [80, 10, 5, 5],
+          ["#06b6d4", "#00A0C4", "#fb7185", "#94a3b8"],
+          "50%"
+        )
+      );
+      setIf(
+        "tiktokAge",
+        createBarPlaceholder(
+          Chart,
+          document.getElementById("tiktokAge"),
+          ["13–17", "18–24", "25–34", "35–44", "45–54", "55–64", "65+"],
+          [6.1, 18.4, 33.8, 23.5, 11.9, 4.3, 2.1],
+          "#06b6d4"
+        )
+      );
 
-      setIf('youtubeGender', createDoughnutPlaceholder(Chart, document.getElementById('youtubeGender'), ['Male','Female'], [45,55], ['#C95353','#94a3b8'], '60%'))
-      setIf('youtubeAudience', createDoughnutPlaceholder(Chart, document.getElementById('youtubeAudience'), ['United States','Others'], [36,64], ['#1f7ced','#94a3b8'], '50%'))
-      setIf('youtubeAge', createBarPlaceholder(Chart, document.getElementById('youtubeAge'), ['13–17','18–24','25–34','35–44','45–54','55–64','65+'], [6.1,18.4,33.8,23.5,11.9,4.3,2.1], '#C95353'))
+      setIf(
+        "youtubeGender",
+        createDoughnutPlaceholder(
+          Chart,
+          document.getElementById("youtubeGender"),
+          ["Male", "Female"],
+          [45, 55],
+          ["#C95353", "#94a3b8"],
+          "60%"
+        )
+      );
+      setIf(
+        "youtubeAudience",
+        createDoughnutPlaceholder(
+          Chart,
+          document.getElementById("youtubeAudience"),
+          ["United States", "Others"],
+          [36, 64],
+          ["#1f7ced", "#94a3b8"],
+          "50%"
+        )
+      );
+      setIf(
+        "youtubeAge",
+        createBarPlaceholder(
+          Chart,
+          document.getElementById("youtubeAge"),
+          ["13–17", "18–24", "25–34", "35–44", "45–54", "55–64", "65+"],
+          [6.1, 18.4, 33.8, 23.5, 11.9, 4.3, 2.1],
+          "#C95353"
+        )
+      );
 
       // Animation runner
       const SECTION_MAP = {
-        'tiktok-audience': { charts: ['tiktokGender','tiktokAudience','tiktokAge'], numbers: [['tiktokFollowers',40000,1400,'compact'],['tiktokViews',4000000,1500,'compact'],['tiktokEngagement',30,1000,'integer']] },
-        'youtube-audience': { charts: ['youtubeGender','youtubeAudience','youtubeAge'], numbers: [['youtubeFollowers',1300,1200,'compact'],['youtubeViews',1500000,1400,'compact'],['youtubeEngagement',20,1000,'integer']] },
-      }
+        "tiktok-audience": {
+          charts: ["tiktokGender", "tiktokAudience", "tiktokAge"],
+          numbers: [
+            ['tiktokFollowers', 40000, 1400, 'compact'],
+            ['tiktokViews', 7000000, 1500, 'compact'],
+            ['tiktokEngagement', 40, 1000, 'integer'],
+            ['tiktokDailyLiveWatchers', 300, 1000, 'compact'],
+            ['tiktokActiveViewers', 25000, 1500, 'compact'],
+            ['tiktokPeakConcurrentViewers', 7200, 1000, 'compact'],
+          ],
+        },
+        "youtube-audience": {
+          charts: ["youtubeGender", "youtubeAudience", "youtubeAge"],
+          numbers: [
+            ["youtubeFollowers", 1300, 1200, "compact"],
+            ["youtubeViews", 1500000, 1400, "compact"],
+            ["youtubeEngagement", 20, 1000, "integer"],
+          ],
+        },
+      };
 
       const runAudienceAnimations = (sectionId) => {
-        window._audienceCharts = window._audienceCharts || {}
-        window._audienceCharts._ranSections = window._audienceCharts._ranSections || {}
+        window._audienceCharts = window._audienceCharts || {};
+        window._audienceCharts._ranSections =
+          window._audienceCharts._ranSections || {};
         if (sectionId) {
-          if (window._audienceCharts._ranSections[sectionId]) return
-          const map = SECTION_MAP[sectionId]
-          if (!map) return
+          if (window._audienceCharts._ranSections[sectionId]) return;
+          const map = SECTION_MAP[sectionId];
+          if (!map) return;
           try {
             map.charts.forEach((key) => {
-              const item = window._audienceCharts[key]
-              if (!item || !item.chart) return
-              item.chart.data.datasets[0].data = item.target
-              item.chart.update({ duration: 900, easing: 'easeInOutCubic' })
-            })
-            map.numbers.forEach(([id,val,dur,fmt]) => animateNumber(id,val,dur,fmt))
-            window._audienceCharts._ranSections[sectionId] = true
-          } catch (e) { console.warn('Audience section animation failed', sectionId, e) }
-          return
+              const item = window._audienceCharts[key];
+              if (!item || !item.chart) return;
+              item.chart.data.datasets[0].data = item.target;
+              item.chart.update({ duration: 900, easing: "easeInOutCubic" });
+            });
+            map.numbers.forEach(([id, val, dur, fmt]) =>
+              animateNumber(id, val, dur, fmt)
+            );
+            window._audienceCharts._ranSections[sectionId] = true;
+          } catch (e) {
+            console.warn("Audience section animation failed", sectionId, e);
+          }
+          return;
         }
-        if (window._audienceCharts._ran) return
+        if (window._audienceCharts._ran) return;
         try {
           Object.keys(window._audienceCharts).forEach((key) => {
-            if (key === '_ran' || key === '_ranSections') return
-            const item = window._audienceCharts[key]
-            if (!item || !item.chart) return
-            item.chart.data.datasets[0].data = item.target
-            item.chart.update({ duration: 900, easing: 'easeInOutCubic' })
-          })
+            if (key === "_ran" || key === "_ranSections") return;
+            const item = window._audienceCharts[key];
+            if (!item || !item.chart) return;
+            item.chart.data.datasets[0].data = item.target;
+            item.chart.update({ duration: 900, easing: "easeInOutCubic" });
+          });
           // fallback numbers
-          animateNumber('tiktokFollowers',40000,1400,'compact')
-          animateNumber('tiktokViews',4000000,1500,'compact')
-          animateNumber('tiktokEngagement',30,1000,'integer')
-          animateNumber('youtubeFollowers',1300,1200,'compact')
-          animateNumber('youtubeViews',2300000,1400,'compact')
-          animateNumber('youtubeEngagement',50,1000,'integer')
-          window._audienceCharts._ran = true
-        } catch (e) { console.warn('Audience animation failed', e) }
-      }
+          animateNumber("tiktokDailyLiveWatchers", 300, 1000, "compact");
+          animateNumber("tiktokActiveViewers", 25000, 1500, "compact");
+          animateNumber("tiktokPeakConcurrentViewers", 7200, 1000, "compact");
+
+          animateNumber("tiktokFollowers", 40000, 1400, "compact");
+          animateNumber("tiktokViews", 4000000, 1500, "compact");
+          animateNumber("tiktokEngagement", 30, 1000, "integer");
+
+          animateNumber("youtubeFollowers", 1300, 1200, "compact");
+          animateNumber("youtubeViews", 2300000, 1400, "compact");
+          animateNumber("youtubeEngagement", 50, 1000, "integer");
+          window._audienceCharts._ran = true;
+        } catch (e) {
+          console.warn("Audience animation failed", e);
+        }
+      };
 
       // Observe blocks
       const observeBlock = (selector, sectionId) => {
-        const el = document.getElementById(selector)
-        if (!el) return
-        if ('IntersectionObserver' in window) {
-          const obs = new IntersectionObserver((entries, observer) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                console.debug && console.debug('[initAudienceCharts] observed intersect', sectionId)
-                runAudienceAnimations(sectionId)
-                observer.disconnect()
-              }
-            })
-          }, { threshold: 0.25 })
-          obs.observe(el)
-          observers.push(obs)
+        const el = document.getElementById(selector);
+        if (!el) return;
+        if ("IntersectionObserver" in window) {
+          const obs = new IntersectionObserver(
+            (entries, observer) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  console.debug &&
+                    console.debug(
+                      "[initAudienceCharts] observed intersect",
+                      sectionId
+                    );
+                  runAudienceAnimations(sectionId);
+                  observer.disconnect();
+                }
+              });
+            },
+            { threshold: 0.25 }
+          );
+          obs.observe(el);
+          observers.push(obs);
           // Defer the initial bounding rect check to the next frame so layout has settled
           requestAnimationFrame(() => {
             try {
-              const rect = el.getBoundingClientRect()
+              const rect = el.getBoundingClientRect();
               if (rect.top < window.innerHeight && rect.bottom > 0) {
-                console.debug && console.debug('[initAudienceCharts] element already in view', sectionId)
-                runAudienceAnimations(sectionId)
-                obs.disconnect()
+                console.debug &&
+                  console.debug(
+                    "[initAudienceCharts] element already in view",
+                    sectionId
+                  );
+                runAudienceAnimations(sectionId);
+                obs.disconnect();
               }
-            } catch (e) { /* ignore */ }
-          })
+            } catch (e) {
+              /* ignore */
+            }
+          });
         } else {
-          runAudienceAnimations(sectionId)
+          runAudienceAnimations(sectionId);
         }
-      }
+      };
 
-      observeBlock('tiktok-audience','tiktok-audience')
-      observeBlock('youtube-audience','youtube-audience')
+      observeBlock("tiktok-audience", "tiktok-audience");
+      observeBlock("youtube-audience", "youtube-audience");
 
       // expose for manual triggers
-      window.initAudienceCharts = setupCharts
-    }
+      window.initAudienceCharts = setupCharts;
+    };
 
-    setupCharts()
+    setupCharts();
 
     return () => {
       // cleanup observers
-      observers.forEach(o => { try { o.disconnect() } catch(e){} })
+      observers.forEach((o) => {
+        try {
+          o.disconnect();
+        } catch (e) {}
+      });
       // destroy charts we created
       try {
         if (window._audienceCharts) {
           Object.keys(window._audienceCharts).forEach((k) => {
-            const item = window._audienceCharts[k]
-            if (item && item.chart && typeof item.chart.destroy === 'function') {
-              try { item.chart.destroy() } catch (e) {}
+            const item = window._audienceCharts[k];
+            if (
+              item &&
+              item.chart &&
+              typeof item.chart.destroy === "function"
+            ) {
+              try {
+                item.chart.destroy();
+              } catch (e) {}
             }
-          })
+          });
         }
-        if (window && window.initAudienceCharts) delete window.initAudienceCharts
+        if (window && window.initAudienceCharts)
+          delete window.initAudienceCharts;
       } catch (e) {}
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <section id="audience" className="bg-[#f8d481] py-12 section-shadow">
