@@ -163,8 +163,9 @@ export async function getStaticProps() {
 if (typeof window !== 'undefined') {
   // Expose initAudienceCharts on window so component can call it on mount
   window.initAudienceCharts = async function initAudienceCharts() {
+    console.debug && console.debug('[initAudienceCharts] starting (audience.js)')
+    const src = 'https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js'
     if (!window.Chart) {
-      const src = 'https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js'
       if (!document.querySelector(`script[src="${src}"]`)) {
         const s = document.createElement('script')
         s.src = src
@@ -180,10 +181,9 @@ if (typeof window !== 'undefined') {
       }
     }
 
-      try {
+    try {
       const Chart = window.Chart
 
-      // Animate numeric counters (compact formatting for k/M)
       const formatCompact = (n) => {
         if (n >= 1000000) return (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1).replace(/\.0$/, '') + 'M'
         if (n >= 1000) return (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1).replace(/\.0$/, '') + 'k'
@@ -204,133 +204,160 @@ if (typeof window !== 'undefined') {
         requestAnimationFrame(tick)
       }
 
-      // Helper to create doughnut charts with guaranteed entry animation
-      const createDoughnut = (canvas, labels, data, colors, cutout = '60%') => {
-        if (!canvas || !(canvas instanceof HTMLCanvasElement)) return
-        // Destroy existing chart instance on this canvas (if any)
-        try {
-          const existing = Chart.getChart(canvas)
-          if (existing) existing.destroy()
-        } catch (e) {}
+      // Create placeholders (zeroed charts) and store targets on window._audienceCharts
+      window._audienceCharts = window._audienceCharts || {}
 
+      const createDoughnutPlaceholder = (canvas, labels, data, colors, cutout = '60%') => {
+        if (!canvas || !(canvas instanceof HTMLCanvasElement)) return null
+        try { const existing = Chart.getChart(canvas); if (existing) existing.destroy() } catch (e) {}
         const initial = data.map(() => 0)
         const cfg = {
           type: 'doughnut',
           data: { labels, datasets: [{ data: initial, backgroundColor: colors, borderWidth: 0 }] },
+          options: { responsive: true, maintainAspectRatio: false, cutout, animation: { duration: 900, easing: 'easeInOutCubic' }, plugins: { legend: { position: 'bottom' } } },
+        }
+        const chart = new Chart(canvas.getContext('2d'), cfg)
+        return { chart, target: data }
+      }
+
+      const createBarPlaceholder = (canvas, labels, target, color) => {
+        if (!canvas || !(canvas instanceof HTMLCanvasElement)) return null
+        try { const existing = Chart.getChart(canvas); if (existing) existing.destroy() } catch (e) {}
+        const cfg = {
+          type: 'bar',
+          data: { labels, datasets: [{ label: 'Percent', data: labels.map(() => 0), backgroundColor: color }] },
           options: {
+            indexAxis: 'y',
             responsive: true,
             maintainAspectRatio: false,
-            cutout,
-            animation: { duration: 900, easing: 'easeInOutCubic' },
-            plugins: {
-              tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                padding: 12,
-                titleFont: { size: 14, weight: 'bold' },
-                bodyFont: { size: 13 },
-                callbacks: {
-                  label: function (context) {
-                    const label = context.label || ''
-                    const value = context.raw
-                    const sum = context.dataset.data.reduce((a, b) => a + b, 0)
-                    const pct = sum ? Math.round((value / sum) * 1000) / 10 : value
-                    return `${label}: ${value} (${pct}%)`
-                  },
-                },
-              },
-              legend: { position: 'bottom', labels: { padding: 15, font: { size: 13 } } },
-            },
+            animation: { duration: 1000, easing: 'easeInOutCubic' },
+            scales: { x: { beginAtZero: true, max: 40, display: false }, y: { grid: { display: false, drawBorder: false }, ticks: { display: true, font: { size: 12 } } } },
+            plugins: { legend: { display: false } },
           },
         }
-
         const chart = new Chart(canvas.getContext('2d'), cfg)
-        // animate to final values to ensure an entry animation regardless of Chart.js internals
-        requestAnimationFrame(() => {
-          chart.data.datasets[0].data = data
-          chart.update({ duration: 900, easing: 'easeInOutCubic' })
-        })
-        return chart
+        return { chart, target }
       }
+
+      // Create placeholders and store them
+      const tiktokGenderCtx = document.getElementById('tiktokGender')
+      const tg = createDoughnutPlaceholder(tiktokGenderCtx, ['Male', 'Female'], [34, 66], ['#06b6d4', '#fb7185'], '60%')
+      if (tg) window._audienceCharts.tiktokGender = tg
+
+      const tiktokAudienceCtx = document.getElementById('tiktokAudience')
+      const ta = createDoughnutPlaceholder(tiktokAudienceCtx, ['USA', 'Canada', 'UK', 'Others'], [80, 10, 5, 5], ['#06b6d4', '#00A0C4', '#fb7185', '#94a3b8'], '50%')
+      if (ta) window._audienceCharts.tiktokAudience = ta
+
+      const tiktokAgeCtx = document.getElementById('tiktokAge')
+      const tA = createBarPlaceholder(tiktokAgeCtx, ['13–17', '18–24', '25–34', '35–44', '45–54', '55–64', '65+'], [6.1, 18.4, 33.8, 23.5, 11.9, 4.3, 2.1], '#06b6d4')
+      if (tA) window._audienceCharts.tiktokAge = tA
 
       const youtubeGenderCtx = document.getElementById('youtubeGender')
-      createDoughnut(youtubeGenderCtx, ['Male', 'Female'], [45, 55], ['#C95353', '#94a3b8'], '60%')
-
-      const tiktokGenderCtx = document.getElementById('tiktokGender')
-      createDoughnut(tiktokGenderCtx, ['Male', 'Female'], [34, 66], ['#06b6d4', '#fb7185'], '60%')
-      // Audience country pies
-      const tiktokAudienceCtx = document.getElementById('tiktokAudience')
-      createDoughnut(
-        tiktokAudienceCtx,
-        ['USA', 'Canada', 'UK', 'Others'],
-        [80, 10, 5, 5],
-        ['#06b6d4', '#00A0C4', '#fb7185', '#94a3b8'],
-        '50%'
-      )
-
-      // Age distribution horizontal bar charts
-      const tiktokAgeCtx = document.getElementById('tiktokAge')
-      if (tiktokAgeCtx && tiktokAgeCtx instanceof HTMLCanvasElement) {
-        try { const existing = Chart.getChart(tiktokAgeCtx); if (existing) existing.destroy() } catch (e) {}
-        const labels = ['13–17', '18–24', '25–34', '35–44', '45–54', '55–64', '65+']
-        const target = [6.1, 18.4, 33.8, 23.5, 11.9, 4.3, 2.1]
-        const chart = new Chart(tiktokAgeCtx.getContext('2d'), {
-          type: 'bar',
-          data: { labels, datasets: [{ label: 'Percent', data: labels.map(() => 0), backgroundColor: '#06b6d4' }] },
-          options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: { duration: 1000, easing: 'easeInOutCubic' },
-            scales: {
-              x: { beginAtZero: true, max: 40, display: false },
-              y: { grid: { display: false, drawBorder: false }, ticks: { display: true, font: { size: 12 } } },
-            },
-            plugins: { legend: { display: false } },
-          },
-        })
-        requestAnimationFrame(() => {
-          chart.data.datasets[0].data = target
-          chart.update({ duration: 900, easing: 'easeInOutCubic' })
-        })
-      }
-
-      const youtubeAgeCtx = document.getElementById('youtubeAge')
-      if (youtubeAgeCtx && youtubeAgeCtx instanceof HTMLCanvasElement) {
-        try { const existing = Chart.getChart(youtubeAgeCtx); if (existing) existing.destroy() } catch (e) {}
-        const labelsY = ['13–17', '18–24', '25–34', '35–44', '45–54', '55–64', '65+']
-        const targetY = [6.1, 18.4, 33.8, 23.5, 11.9, 4.3, 2.1]
-        const chartY = new Chart(youtubeAgeCtx.getContext('2d'), {
-          type: 'bar',
-          data: { labels: labelsY, datasets: [{ label: 'Percent', data: labelsY.map(() => 0), backgroundColor: '#C95353' }] },
-          options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: { duration: 1000, easing: 'easeInOutCubic' },
-            scales: { x: { beginAtZero: true, max: 40, display: false }, y: { grid: { display: false, drawBorder: false }, ticks: { display: true, font: { size: 12 } } },
-            },
-            plugins: { legend: { display: false } },
-          },
-        })
-        requestAnimationFrame(() => {
-          chartY.data.datasets[0].data = targetY
-          chartY.update({ duration: 900, easing: 'easeInOutCubic' })
-        })
-      }
+      const yg = createDoughnutPlaceholder(youtubeGenderCtx, ['Male', 'Female'], [45, 55], ['#C95353', '#94a3b8'], '60%')
+      if (yg) window._audienceCharts.youtubeGender = yg
 
       const youtubeAudienceCtx = document.getElementById('youtubeAudience')
-      createDoughnut(youtubeAudienceCtx, ['United States', 'Others'], [36, 64], ['#1f7ced', '#94a3b8'], '50%')
+      const ya = createDoughnutPlaceholder(youtubeAudienceCtx, ['United States', 'Others'], [36, 64], ['#1f7ced', '#94a3b8'], '50%')
+      if (ya) window._audienceCharts.youtubeAudience = ya
 
-      // Animate the top numbers (values chosen as sensible defaults)
-      animateNumber('tiktokFollowers', 40000, 1400, 'compact')
-      animateNumber('tiktokViews', 4000000, 1500, 'compact')
-      animateNumber('tiktokEngagement', 30, 1000, 'integer')
+      const youtubeAgeCtx = document.getElementById('youtubeAge')
+      const yA = createBarPlaceholder(youtubeAgeCtx, ['13–17', '18–24', '25–34', '35–44', '45–54', '55–64', '65+'], [6.1, 18.4, 33.8, 23.5, 11.9, 4.3, 2.1], '#C95353')
+      if (yA) window._audienceCharts.youtubeAge = yA
 
-      animateNumber('youtubeFollowers', 1300, 1200, 'compact')
-      animateNumber('youtubeViews', 1500000, 1400, 'compact')
-      animateNumber('youtubeEngagement', 20, 1000, 'integer')
+      // SECTION map for this page's numbers
+      const SECTION_MAP = {
+        'tiktok-audience': {
+          charts: ['tiktokGender', 'tiktokAudience', 'tiktokAge'],
+          numbers: [
+            ['tiktokFollowers', 40000, 1400, 'compact'],
+            ['tiktokViews', 4000000, 1500, 'compact'],
+            ['tiktokEngagement', 30, 1000, 'integer'],
+          ],
+        },
+        'youtube-audience': {
+          charts: ['youtubeGender', 'youtubeAudience', 'youtubeAge'],
+          numbers: [
+            ['youtubeFollowers', 1300, 1200, 'compact'],
+            ['youtubeViews', 1500000, 1400, 'compact'],
+            ['youtubeEngagement', 20, 1000, 'integer'],
+          ],
+        },
+      }
+
+      // Animation runner that can run per-section
+      const runAudienceAnimations = (sectionId) => {
+        window._audienceCharts = window._audienceCharts || {}
+        window._audienceCharts._ranSections = window._audienceCharts._ranSections || {}
+        if (sectionId) {
+          if (window._audienceCharts._ranSections[sectionId]) return
+          const map = SECTION_MAP[sectionId]
+          if (!map) return
+          try {
+            map.charts.forEach((key) => {
+              const item = window._audienceCharts[key]
+              if (!item || !item.chart) return
+              item.chart.data.datasets[0].data = item.target
+              item.chart.update({ duration: 900, easing: 'easeInOutCubic' })
+            })
+            map.numbers.forEach(([id, val, dur, fmt]) => animateNumber(id, val, dur, fmt))
+            window._audienceCharts._ranSections[sectionId] = true
+          } catch (e) {
+            console.warn('Audience section animation failed', sectionId, e)
+          }
+          return
+        }
+
+        // Fallback: animate everything once
+        if (window._audienceCharts._ran) return
+        try {
+          Object.keys(window._audienceCharts).forEach((key) => {
+            if (key === '_ran' || key === '_ranSections') return
+            const item = window._audienceCharts[key]
+            if (!item || !item.chart) return
+            item.chart.data.datasets[0].data = item.target
+            item.chart.update({ duration: 900, easing: 'easeInOutCubic' })
+          })
+          // numbers
+          animateNumber('tiktokFollowers', 40000, 1400, 'compact')
+          animateNumber('tiktokViews', 4000000, 1500, 'compact')
+          animateNumber('tiktokEngagement', 30, 1000, 'integer')
+
+          animateNumber('youtubeFollowers', 1300, 1200, 'compact')
+          animateNumber('youtubeViews', 1500000, 1400, 'compact')
+          animateNumber('youtubeEngagement', 20, 1000, 'integer')
+
+          window._audienceCharts._ran = true
+        } catch (e) {
+          console.warn('Audience animation failed', e)
+        }
+      }
+
+      const observeBlock = (selector, sectionId) => {
+        const el = document.getElementById(selector)
+        if (!el) return
+        if ('IntersectionObserver' in window) {
+          const obs = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                runAudienceAnimations(sectionId)
+                observer.disconnect()
+              }
+            })
+          }, { threshold: 0.25 })
+          obs.observe(el)
+          const rect = el.getBoundingClientRect()
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            runAudienceAnimations(sectionId)
+            obs.disconnect()
+          }
+        } else {
+          runAudienceAnimations(sectionId)
+        }
+      }
+
+      observeBlock('tiktok-audience', 'tiktok-audience')
+      observeBlock('youtube-audience', 'youtube-audience')
     } catch (e) {
-      // if Chart fails, silently continue — charts are progressive enhancement
       console.warn('Chart init failed', e)
     }
   }

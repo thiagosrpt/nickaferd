@@ -48,55 +48,7 @@ export default function Home() {
         </section>
 
         {/* Content section — section color B */}
-        <section id="content" className="bg-[#f8d481] py-12 section-shadow">
-          <div className="container mx-auto px-4">
-            <header className="mb-8 text-center">
-              <h2 className="text-3xl font-semibold">Content</h2>
-              <p className="mt-2">Featured videos from my channels — swipe to explore.</p>
-            </header>
-
-            <div className="space-y-12">
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-2xl font-semibold">Featured TikToks</h3>
-                  <a
-                    href="https://www.tiktok.com/@nickaferd"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#06b6d4] text-white text-sm hover:bg-[#05a6bf]"
-                    aria-label="Open TikTok channel in new tab"
-                  >
-                    <i className="bi-tiktok"></i>
-                    Channel
-                    <i className="bi-arrow-right"></i>
-                  </a>
-                </div>
-                <VideoCarousel videos={videos.filter((v) => v.platform === 'tiktok')} platform="tiktok" />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-2xl font-semibold">Featured YouTube Shorts</h3>
-                  <a
-                    href="https://www.youtube.com/@nickaferd/shorts"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#C95353] text-white text-sm hover:bg-[#b04444]"
-                    aria-label="Open YouTube channel in new tab"
-                  >
-                    <i className="bi-youtube"></i>
-                    Channel
-                    <i className="bi-arrow-right"></i>
-                  </a>
-                </div>
-                <VideoCarousel videos={videos.filter((v) => v.platform === 'youtube')} platform="youtube" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Audience section moved from pages/audience.js */}
-        <section id="audience" className="section-c py-12">
+        <section id="audience" className="bg-[#f8d481] py-12 section-shadow">
           <div className="container mx-auto px-4">
             <header className="mb-8 text-center">
               <h2 className="text-3xl font-semibold">Audience</h2>
@@ -105,7 +57,7 @@ export default function Home() {
 
             <section className="grid grid-cols-1 gap-6">
               {/* TikTok block */}
-              <article className="bg-white shadow rounded-xl p-6">
+              <article id="tiktok-audience" className="bg-white shadow rounded-xl p-6">
                 <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-3">
                   <i className="bi-tiktok text-[#06b6d4]"></i>
                   <span>TikTok</span>
@@ -185,7 +137,7 @@ export default function Home() {
               </article>
 
               {/* YouTube block */}
-              <article className="bg-white shadow rounded-xl p-6">
+              <article id="youtube-audience" className="bg-white shadow rounded-xl p-6">
                   <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-3">
                   <i className="bi-youtube text-red-600"></i>
                   <span>YouTube</span>
@@ -244,6 +196,54 @@ export default function Home() {
                 </div>
               </article>
             </section>
+          </div>
+        </section>
+
+        {/* Audience section moved from pages/audience.js */}
+        <section id="content" className="section-c py-12">
+          <div className="container mx-auto px-4">
+            <header className="mb-8 text-center">
+              <h2 className="text-3xl font-semibold">Content</h2>
+              <p className="mt-2">Featured videos from my channels — swipe to explore.</p>
+            </header>
+
+            <div className="space-y-12">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-2xl font-semibold">Featured TikToks</h3>
+                  <a
+                    href="https://www.tiktok.com/@nickaferd"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#06b6d4] text-white text-sm hover:bg-[#05a6bf]"
+                    aria-label="Open TikTok channel in new tab"
+                  >
+                    <i className="bi-tiktok"></i>
+                    Channel
+                    <i className="bi-arrow-right"></i>
+                  </a>
+                </div>
+                <VideoCarousel videos={videos.filter((v) => v.platform === 'tiktok')} platform="tiktok" />
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-2xl font-semibold">Featured YouTube Shorts</h3>
+                  <a
+                    href="https://www.youtube.com/@nickaferd/shorts"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#C95353] text-white text-sm hover:bg-[#b04444]"
+                    aria-label="Open YouTube channel in new tab"
+                  >
+                    <i className="bi-youtube"></i>
+                    Channel
+                    <i className="bi-arrow-right"></i>
+                  </a>
+                </div>
+                <VideoCarousel videos={videos.filter((v) => v.platform === 'youtube')} platform="youtube" />
+              </div>
+            </div>
           </div>
         </section>
 
@@ -415,22 +415,65 @@ if (typeof window !== 'undefined') {
         console.debug && console.debug('[initAudienceCharts] created youtubeAge')
       }
 
-      // Animation runner that updates stored charts and numbers
-      const runAudienceAnimations = () => {
-        if (!window._audienceCharts || window._audienceCharts._ran) return
-        console.debug && console.debug('[initAudienceCharts] running animations')
+      // Animation runner that can animate either all charts or only a specific section
+      const SECTION_MAP = {
+        'tiktok-audience': {
+          charts: ['tiktokGender', 'tiktokAudience', 'tiktokAge'],
+          numbers: [
+            ['tiktokFollowers', 40000, 1400, 'compact'],
+            ['tiktokViews', 7000000, 1500, 'compact'],
+            ['tiktokEngagement', 40, 1000, 'integer'],
+            ['tiktokDailyLiveWatchers', 300, 1000, 'compact'],
+            ['tiktokActiveViewers', 25000, 1500, 'compact'],
+            ['tiktokPeakConcurrentViewers', 7200, 1000, 'compact'],
+          ],
+        },
+        'youtube-audience': {
+          charts: ['youtubeGender', 'youtubeAudience', 'youtubeAge'],
+          numbers: [
+            ['youtubeFollowers', 1300, 1200, 'compact'],
+            ['youtubeViews', 2300000, 1400, 'compact'],
+            ['youtubeEngagement', 50, 1000, 'integer'],
+          ],
+        },
+      }
+
+      const runAudienceAnimations = (sectionId) => {
+        window._audienceCharts = window._audienceCharts || {}
+        window._audienceCharts._ranSections = window._audienceCharts._ranSections || {}
+
+        // If sectionId provided, only run that section once
+        if (sectionId) {
+          if (window._audienceCharts._ranSections[sectionId]) return
+          const map = SECTION_MAP[sectionId]
+          if (!map) return
+          try {
+            map.charts.forEach((key) => {
+              const item = window._audienceCharts[key]
+              if (!item || !item.chart) return
+              item.chart.data.datasets[0].data = item.target
+              item.chart.update({ duration: 900, easing: 'easeInOutCubic' })
+            })
+            map.numbers.forEach(([id, val, dur, fmt]) => animateNumber(id, val, dur, fmt))
+            window._audienceCharts._ranSections[sectionId] = true
+          } catch (e) {
+            console.warn('Audience section animation failed', sectionId, e)
+          }
+          return
+        }
+
+        // No section specified: run everything once
+        if (window._audienceCharts._ran) return
         try {
           Object.keys(window._audienceCharts).forEach((key) => {
-            if (key === '_ran') return
+            if (key === '_ran' || key === '_ranSections') return
             const item = window._audienceCharts[key]
             if (!item || !item.chart) return
-            console.debug && console.debug('[initAudienceCharts] animating', key, item.target)
-            const chart = item.chart
-            chart.data.datasets[0].data = item.target
-            chart.update({ duration: 900, easing: 'easeInOutCubic' })
+            item.chart.data.datasets[0].data = item.target
+            item.chart.update({ duration: 900, easing: 'easeInOutCubic' })
           })
 
-          // Animate numbers
+          // Animate all numbers as fallback
           animateNumber('tiktokFollowers', 40000, 1400, 'compact')
           animateNumber('tiktokViews', 7000000, 1500, 'compact')
           animateNumber('tiktokEngagement', 40, 1000, 'integer')
@@ -448,28 +491,34 @@ if (typeof window !== 'undefined') {
         }
       }
 
-      // Observe the audience section and trigger animations when it becomes visible
-      const audienceEl = document.getElementById('audience')
-      if (audienceEl && 'IntersectionObserver' in window) {
-        const obs = new IntersectionObserver((entries, observer) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              runAudienceAnimations()
-              observer.disconnect()
-            }
-          })
-        }, { threshold: 0.25 })
-        obs.observe(audienceEl)
-        // If already in view, run immediately
-        const rect = audienceEl.getBoundingClientRect()
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          runAudienceAnimations()
-          obs.disconnect()
+      // Observe the TikTok and YouTube audience blocks separately so we can
+      // trigger animations independently when each block enters the viewport.
+      const observeBlock = (selector, sectionId) => {
+        const el = document.getElementById(selector)
+        if (!el) return
+        if ('IntersectionObserver' in window) {
+          const obs = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                runAudienceAnimations(sectionId)
+                observer.disconnect()
+              }
+            })
+          }, { threshold: 0.25 })
+          obs.observe(el)
+          const rect = el.getBoundingClientRect()
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            runAudienceAnimations(sectionId)
+            obs.disconnect()
+          }
+        } else {
+          // fallback: run immediately for this section
+          runAudienceAnimations(sectionId)
         }
-      } else {
-        // Fallback: run immediately
-        runAudienceAnimations()
       }
+
+      observeBlock('tiktok-audience', 'tiktok-audience')
+      observeBlock('youtube-audience', 'youtube-audience')
     } catch (e) {
       console.warn('Chart init failed', e)
     }
