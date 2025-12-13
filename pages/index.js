@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useEffect } from 'react'
-import VideoCard from '../components/VideoCard'
+import Audience from '../components/Audience'
 import VideoCarousel from '../components/VideoCarousel'
 import videos from '../data/videos'
 
@@ -47,159 +47,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Content section — section color B */}
-        <section id="audience" className="bg-[#f8d481] py-12 section-shadow">
-          <div className="container mx-auto px-4">
-            <header className="mb-8 text-center">
-              <h2 className="text-3xl font-semibold">Audience</h2>
-              <p className="mt-2">Demographics, interests and top metrics.</p>
-            </header>
+        {/* Audience section — section color B moved from pages/audience.js */}
 
-            <section className="grid grid-cols-1 gap-6">
-              {/* TikTok block */}
-              <article id="tiktok-audience" className="bg-white shadow rounded-xl p-6">
-                <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-3">
-                  <i className="bi-tiktok text-[#06b6d4]"></i>
-                  <span>TikTok</span>
-                </h2>
+          <Audience/>
 
-                {/* Top Live Metrics row */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                  <div className="text-center">
-                    <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokDailyLiveWatchers">0</span>+</div>
-                    <div className="text-md text-gray-600">Avg Daily Live Viewers</div>
-                  </div>
-
-                  <div className="text-center">
-                    <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokActiveViewers">0</span></div>
-                    <div className="text-md text-gray-600">Monthly Live Viewers</div>
-                  </div>
-
-                  <div className="text-center">
-                    <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokPeakConcurrentViewers">0</span>%</div>
-                    <div className="text-md text-gray-600">Peak Concurrent Live Viewers</div>
-                  </div>
-                </div>
-
-                {/* Top Short-Form Videos Metrics row */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                  <div className="text-center">
-                    <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokFollowers">0</span></div>
-                    <div className="text-md text-gray-600">Followers</div>
-                  </div>
-
-                  <div className="text-center">
-                    <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokViews">0</span></div>
-                    <div className="text-md text-gray-600">Views</div>
-                  </div>
-
-                  <div className="text-center">
-                    <div className="text-5xl font-extrabold text-[#06b6d4]"><span id="tiktokEngagement">0</span>%</div>
-                    <div className="text-md text-gray-600">Engaged Views</div>
-                  </div>
-                </div>
-
-                {/* Demographics section */}
-                <div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <strong>Age</strong>
-                      <div className="mt-2 w-full h-40">
-                        <canvas id="tiktokAge" aria-label="TikTok age distribution" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <strong>Gender</strong>
-                      <div className="mt-2 w-100 h-40">
-                        <canvas id="tiktokGender" aria-label="TikTok gender chart" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <strong>Country</strong>
-                      <div className="mt-2 w-100 h-48">
-                        <canvas id="tiktokAudience" aria-label="TikTok audience countries chart" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Interests */}
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-2 text-center">Interests</h3>
-                  <ul className="badge-list">
-                    <li className="badge badge--tiktok">Merchadising</li>
-                    <li className="badge badge--tiktok">Theme Parks</li>
-                    <li className="badge badge--tiktok">Travel &amp; Hotel Stays</li>
-                    <li className="badge badge--tiktok">Entertainment</li>
-                  </ul>
-                </div>
-              </article>
-
-              {/* YouTube block */}
-              <article id="youtube-audience" className="bg-white shadow rounded-xl p-6">
-                  <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-3">
-                  <i className="bi-youtube text-red-600"></i>
-                  <span>YouTube</span>
-                </h2>
-
-                {/* Top numbers row */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                  <div className="text-center">
-                    <div className="text-5xl font-extrabold text-[#C95353]"><span id="youtubeFollowers">0</span></div>
-                    <div className="text-lg text-gray-600">Followers</div>
-                  </div>
-
-                  <div className="text-center">
-                    <div className="text-5xl font-extrabold text-[#C95353]"><span id="youtubeViews">0</span></div>
-                    <div className="text-lg text-gray-600">Views</div>
-                  </div>
-
-                  <div className="text-center">
-                    <div className="text-5xl font-extrabold text-[#C95353]"><span id="youtubeEngagement">0</span>%</div>
-                    <div className="text-lg text-gray-600">Engaged Views</div>
-                  </div>
-                </div>
-
-                {/* Demographics section */}
-                <div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <strong>Age</strong>
-                      <div className="mt-2 w-full h-40">
-                        <canvas id="youtubeAge" aria-label="YouTube age distribution" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <strong>Gender</strong>
-                      <div className="mt-2 w-100 h-40">
-                        <canvas id="youtubeGender" aria-label="YouTube gender chart" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <strong>Country</strong>
-                      <div className="mt-2 w-100 h-48">
-                        <canvas id="youtubeAudience" aria-label="YouTube audience countries chart" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Interests */}
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-2 text-center">Interests</h3>
-                  <ul className="badge-list">
-                    <li className="badge badge--youtube">Curiosities</li>
-                    <li className="badge badge--youtube">Entertainment</li>
-                  </ul>
-                </div>
-              </article>
-            </section>
-          </div>
-        </section>
-
-        {/* Audience section moved from pages/audience.js */}
+        {/* Content section */}
         <section id="content" className="section-c py-12">
           <div className="container mx-auto px-4">
             <header className="mb-8 text-center">
