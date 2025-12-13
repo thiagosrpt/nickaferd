@@ -34,15 +34,32 @@ export default function Audience() {
     const animateNumber = (id, target, duration = 1200, format = 'compact') => {
       const el = document.getElementById(id)
       if (!el) return
-      const start = 0
+      const start = Number(el.getAttribute('data-start') || 0) || 0
       const startTime = performance.now()
+      const raf = window.requestAnimationFrame.bind(window)
+      const caf = window.cancelAnimationFrame.bind(window)
+      let rafId = null
+
       const tick = (now) => {
         const t = Math.min((now - startTime) / duration, 1)
         const value = Math.round(start + (target - start) * t)
         el.textContent = format === 'compact' ? formatCompact(value) : String(Math.round(value))
-        if (t < 1) requestAnimationFrame(tick)
+        if (t < 1) rafId = raf(tick)
       }
-      requestAnimationFrame(tick)
+
+      rafId = raf(tick)
+
+      // Ensure we always finish (iOS may throttle RAF). Force final value after duration+100ms
+      const finTimeout = setTimeout(() => {
+        try {
+          const final = format === 'compact' ? formatCompact(target) : String(Math.round(target))
+          if (el.textContent !== final) el.textContent = final
+        } catch (e) {}
+        try { if (rafId) caf(rafId) } catch (e) {}
+      }, duration + 120)
+
+      // Return a canceler in case caller wants to stop it (not used currently)
+      return () => { try { clearTimeout(finTimeout); if (rafId) caf(rafId) } catch (e) {} }
     }
 
     // Create zeroed placeholder charts and store them on window._audienceCharts
