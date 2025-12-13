@@ -247,8 +247,8 @@ export default function Audience() {
           charts: ["youtubeGender", "youtubeAudience", "youtubeAge"],
           numbers: [
             ["youtubeFollowers", 1300, 1200, "compact"],
-            ["youtubeViews", 1500000, 1400, "compact"],
-            ["youtubeEngagement", 20, 1000, "integer"],
+            ["youtubeViews", 2300000, 1400, "compact"],
+            ["youtubeEngagement", 50, 1000, "integer"],
           ],
         },
       };
@@ -388,7 +388,7 @@ export default function Audience() {
   }, []);
 
   return (
-    <section id="audience" className="bg-[#f8d481] py-12 section-shadow">
+    <section id="audience" className="bg-[#f8d481] py-12 section-shadow relative z-10 w-full">
       <div className="container mx-auto px-4">
         <header className="mb-8 text-center">
           <h2 className="text-3xl font-semibold">Audience</h2>

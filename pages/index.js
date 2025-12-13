@@ -47,6 +47,33 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Video section — autoplay cover videos */}
+        <section id="video" className="relative w-full overflow-hidden">
+          {/* Desktop video - shows on wider screens (768px+) */}
+          <video
+            className="hidden md:block w-full h-auto"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/images/image-cover-video.jpg"
+          >
+            <source src="/images/cover-video-desktop.mp4" type="video/mp4" />
+          </video>
+
+          {/* Mobile video - shows on narrower screens */}
+          <video
+            className="block md:hidden w-full h-auto"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/images/image-cover-video.jpg"
+          >
+            <source src="/images/cover-video-mobile.mp4" type="video/mp4" />
+          </video>
+        </section>
+
         {/* Audience section — section color B moved from pages/audience.js */}
 
           <Audience/>
