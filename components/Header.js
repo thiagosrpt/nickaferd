@@ -21,7 +21,7 @@ export default function Header() {
   }, [])
 
   return (
-    <header className="sticky top-0 z-30 bg-[var(--header-bg)] backdrop-blur border-b shadow-2xs">
+    <header className="fixed w-full top-0 z-30 bg-[var(--header-bg)] backdrop-blur border-b shadow-2xs">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="font-bold text-lg">
           Nickaferd
