@@ -127,11 +127,11 @@ export default function Home() {
                 {/* Interests */}
                 <div className="mt-6">
                   <h3 className="text-lg font-semibold mb-2 text-center">Interests</h3>
-                  <ul className="list-disc list-inside text-center space-y-1">
-                    <li>Merchadising</li>
-                    <li>Theme Parks</li>
-                    <li>Travel &amp; Hotel Stays</li>
-                    <li>Entertainment</li>
+                  <ul className="badge-list">
+                    <li className="badge badge--tiktok">Merchadising</li>
+                    <li className="badge badge--tiktok">Theme Parks</li>
+                    <li className="badge badge--tiktok">Travel &amp; Hotel Stays</li>
+                    <li className="badge badge--tiktok">Entertainment</li>
                   </ul>
                 </div>
               </article>
@@ -189,9 +189,9 @@ export default function Home() {
                 {/* Interests */}
                 <div className="mt-6">
                   <h3 className="text-lg font-semibold mb-2 text-center">Interests</h3>
-                  <ul className="list-disc list-inside text-center space-y-1">
-                    <li>Curiosities</li>
-                    <li>Entertainment</li>
+                  <ul className="badge-list">
+                    <li className="badge badge--youtube">Curiosities</li>
+                    <li className="badge badge--youtube">Entertainment</li>
                   </ul>
                 </div>
               </article>

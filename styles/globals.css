@@ -27,6 +27,7 @@ main {
   );
 }
 
+
 /* Swiper navigation: white circle with blue border, blue chevron; fills blue on hover */
 .swiper-button-next,
 .swiper-button-prev {
@@ -108,4 +109,39 @@ a:hover { color: var(--brand-title); }
 
 /* Ensure headings without explicit color classes inherit correctly */
 .text-title { color: var(--brand-title) !important; }
+
+
+
+/* Badge-style list for interests (rounded colored bubbles) */
+.badge-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.badge-list .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.06);
+}
+
+.badge:focus {
+  outline: 3px solid rgba(255,255,255,0.16);
+  outline-offset: 2px;
+}
+
+/* Sensible defaults for section-matching colors (can be overridden via utility classes) */
+.badge--tiktok { background-color: #06b6d4; }
+.badge--youtube { background-color: #C95353; }
+
 
