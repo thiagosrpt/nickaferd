@@ -175,12 +175,12 @@ export default function Home() {
               </a>
 
               <a
-                href="mailto:nickaferd@gmail.com"
+                href="mailto:nickaferdd@gmail.com"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-gray-800 text-white text-sm hover:bg-gray-700"
                 aria-label="Send email"
               >
                 <i className="bi-envelope"></i>
-                nickaferd@gmail.com
+                nickaferdd@gmail.com
               </a>
             </div>
           </div>
