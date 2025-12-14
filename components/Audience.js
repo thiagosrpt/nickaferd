@@ -170,8 +170,8 @@ export default function Audience() {
           Chart,
           document.getElementById("tiktokGender"),
           ["Male", "Female"],
-          [40, 60],
-          ["#06b6d4", "#fb7185"],
+          [42, 58],
+          ["#06b6d4", "#fb7185", "#94a3b8"],
           "60%"
         )
       );
@@ -180,8 +180,8 @@ export default function Audience() {
         createDoughnutPlaceholder(
           Chart,
           document.getElementById("tiktokAudience"),
-          ["USA", "Canada", "UK", "Others"],
-          [80, 10, 5, 5],
+          ["USA", "Canada", "Australia", "Others"],
+          [81, 6, 3, 10],
           ["#06b6d4", "#00A0C4", "#fb7185", "#94a3b8"],
           "50%"
         )
@@ -191,8 +191,8 @@ export default function Audience() {
         createBarPlaceholder(
           Chart,
           document.getElementById("tiktokAge"),
-          ["13–17", "18–24", "25–34", "35–44", "45–54", "55–64", "65+"],
-          [6.1, 18.4, 33.8, 23.5, 11.9, 4.3, 2.1],
+          ["18–24", "25–34", "35–44", "45–54", "55+"],
+          [24.9, 32.4, 23.9, 11.4, 7.4],
           "#06b6d4"
         )
       );

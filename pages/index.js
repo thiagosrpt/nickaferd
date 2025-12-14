@@ -24,7 +24,7 @@ export default function Home() {
       <main className="min-h-screen scroll-smooth">
         {/* Top intro — section color A */}
         <section id="top" className="section-top py-16">
-          <div className="container mx-auto px-4 flex items-start justify-between">
+          <div className="container mx-auto px-4 pt-8 flex items-start justify-between">
             <div className="flex-1">
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="w-[230px] h-[230px] rounded-full overflow-hidden flex-shrink-0 mx-auto md:mx-0">
