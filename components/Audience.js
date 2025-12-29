@@ -235,7 +235,7 @@ export default function Audience() {
         "tiktok-audience": {
           charts: ["tiktokGender", "tiktokAudience", "tiktokAge"],
           numbers: [
-            ['tiktokFollowers', 40000, 1400, 'compact'],
+            ['tiktokFollowers', 46000, 1400, 'compact'],
             ['tiktokViews', 7000000, 1500, 'compact'],
             ['tiktokEngagement', 40, 1000, 'integer'],
             ['tiktokDailyLiveWatchers', 300, 1000, 'compact'],
@@ -246,7 +246,7 @@ export default function Audience() {
         "youtube-audience": {
           charts: ["youtubeGender", "youtubeAudience", "youtubeAge"],
           numbers: [
-            ["youtubeFollowers", 1300, 1200, "compact"],
+            ["youtubeFollowers", 1400, 1200, "compact"],
             ["youtubeViews", 2300000, 1400, "compact"],
             ["youtubeEngagement", 50, 1000, "integer"],
           ],
@@ -291,11 +291,11 @@ export default function Audience() {
           animateNumber("tiktokActiveViewers", 25000, 1500, "compact");
           animateNumber("tiktokPeakConcurrentViewers", 7200, 1000, "compact");
 
-          animateNumber("tiktokFollowers", 40000, 1400, "compact");
+          animateNumber("tiktokFollowers", 46000, 1400, "compact");
           animateNumber("tiktokViews", 4000000, 1500, "compact");
           animateNumber("tiktokEngagement", 30, 1000, "integer");
 
-          animateNumber("youtubeFollowers", 1300, 1200, "compact");
+          animateNumber("youtubeFollowers", 1400, 1200, "compact");
           animateNumber("youtubeViews", 2300000, 1400, "compact");
           animateNumber("youtubeEngagement", 50, 1000, "integer");
           window._audienceCharts._ran = true;

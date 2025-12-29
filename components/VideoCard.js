@@ -1,65 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 export default function VideoCard({ video }) {
-  const [interactive, setInteractive] = useState(false)
-
   useEffect(() => {
-    if (video.platform === 'tiktok') {
-      // Load TikTok embed script to parse blockquote embeds.
-      try {
-        const src = 'https://www.tiktok.com/embed.js'
-        const existing = Array.from(document.querySelectorAll('script')).find((s) => s.src === src)
-        if (!existing) {
-          const script = document.createElement('script')
-          script.src = src
-          script.async = true
-          document.body.appendChild(script)
-        }
-
-        // After the embed script runs it replaces the blockquote with the player iframe
-        // and keeps the <section> (caption) element. We hide the caption/username and
-        // attempt to disable autoplay on the generated iframe by adding `autoplay=0`.
-        const attemptCleanup = () => {
-          const wrapper = document.querySelector(`.tiktok-embed-wrapper[data-video-id="${video.id}"]`)
-          if (!wrapper) return
-
-          // Hide the caption/section that includes username and caption text
-          const sections = wrapper.querySelectorAll('blockquote.tiktok-embed > section')
-          sections.forEach((s) => {
-            s.style.display = 'none'
-          })
-
-          // Also hide any remaining text anchors that may render below the player
-          const anchors = wrapper.querySelectorAll('blockquote.tiktok-embed a')
-          anchors.forEach((a) => {
-            a.style.display = 'none'
-          })
-
-          // Find the generated iframe and disable autoplay by setting a query param
-          const iframe = wrapper.querySelector('iframe')
-          if (iframe && iframe.src) {
-            try {
-              const url = new URL(iframe.src)
-              // set autoplay=0 to request paused playback
-              url.searchParams.set('autoplay', '0')
-              // reload iframe with modified url
-              if (url.toString() !== iframe.src) iframe.src = url.toString()
-            } catch (e) {
-              // ignore URL parse errors
-            }
-          }
-        }
-
-        // Try cleanup a few times to account for script load timing
-        const tries = [500, 1200, 2200]
-        const timers = tries.map((t) => setTimeout(attemptCleanup, t))
-
-        return () => timers.forEach(clearTimeout)
-      } catch (e) {
-        // ignore
-      }
-    }
-
     // Ensure YouTube embeds explicitly request paused start
     if (video.platform === 'youtube') {
       const attemptYouTubePause = () => {
@@ -100,50 +42,15 @@ export default function VideoCard({ video }) {
         <div className="w-full">
             {video.platform === 'youtube' ? (
                 <div className="relative w-full" style={{ paddingTop: '177.78%' }}>
-                  {!interactive && (
-                    <button
-                      aria-label="Enable video interaction"
-                      onClick={() => setInteractive(true)}
-                      className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full flex items-center justify-center"
-                      style={{ width: 56, height: 56, border: 'none', touchAction: 'manipulation' }}
-                      >
-                      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 5v14l11-7z" fill="currentColor" />
-                      </svg>
-                    </button>
-                  )}
                   <iframe
                     src={`https://www.youtube.com/embed/${video.id}`}
                     title={video.title}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
-                    className={`absolute top-0 left-0 w-full h-full ${interactive ? '' : 'pointer-events-none'}`}
+                    className="absolute top-0 left-0 w-full h-full"
                   />
                 </div>
-          ) : video.platform === 'tiktok' && video.embedHtml ? (
-            <div className="flex justify-center">
-              <div className="relative w-full max-w-md">
-                {!interactive && (
-                  <button
-                    aria-label="Enable video interaction"
-                    onClick={() => setInteractive(true)}
-                    className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full flex items-center justify-center"
-                    style={{ width: 56, height: 56, border: 'none', touchAction: 'manipulation' }}
-                  >
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8 5v14l11-7z" fill="currentColor" />
-                    </svg>
-                  </button>
-                )}
-                <div
-                  className="tiktok-embed-wrapper"
-                  data-video-id={video.id}
-                  style={{ pointerEvents: interactive ? 'auto' : 'none' }}
-                  dangerouslySetInnerHTML={{ __html: video.embedHtml }}
-                />
-              </div>
-            </div>
           ) : (
             <a
               href={video.url}
@@ -154,6 +61,41 @@ export default function VideoCard({ video }) {
               Open on {video.platform}
             </a>
           )}
+        </div>
+
+        {/* Stats section */}
+        <div className="mt-4 space-y-2 text-sm">
+          {/* TikTok stats */}
+          <div className="flex items-center justify-between py-2 border-b">
+            <a 
+              href={video.tiktokLink} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-[#06b6d4] hover:underline"
+            >
+              <i className="bi-tiktok"></i>
+              <span>TikTok</span>
+            </a>
+            <div className="flex gap-4 text-gray-600">
+              <span>{video.tiktokViews} views</span>
+            </div>
+          </div>
+
+          {/* YouTube stats */}
+          <div className="flex items-center justify-between py-2">
+            <a 
+              href={video.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-[#C95353] hover:underline"
+            >
+              <i className="bi-youtube"></i>
+              <span>YouTube</span>
+            </a>
+            <div className="flex gap-4 text-gray-600">
+              <span>{video.youtubeViews} views</span>
+            </div>
+          </div>
         </div>
       </div>
     </article>

@@ -113,42 +113,32 @@ export default function Home() {
               <p className="mt-2">Featured videos from my channels — swipe to explore.</p>
             </header>
 
-            <div className="space-y-12">
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-2xl font-semibold">Featured TikToks</h3>
-                  <a
-                    href="https://www.tiktok.com/@nickaferd"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#06b6d4] text-white text-sm hover:bg-[#05a6bf]"
-                    aria-label="Open TikTok channel in new tab"
-                  >
-                    <i className="bi-tiktok"></i>
-                    Channel
-                    <i className="bi-arrow-right"></i>
-                  </a>
-                </div>
-                <VideoCarousel videos={videos.filter((v) => v.platform === 'tiktok')} platform="tiktok" />
+            <div>
+              <div className="flex justify-center mb-5 gap-2">
+                <a
+                  href="https://www.tiktok.com/@nickaferd"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#06b6d4] text-white text-sm hover:bg-[#05a6bf]"
+                  aria-label="Open YouTube channel in new tab"
+                >
+                  <i className="bi-tiktok"></i>
+                  @nickaferd on TikTok
+                  <i className="bi-arrow-right"></i>
+                </a>
+                                <a
+                  href="https://www.youtube.com/@nickaferd/shorts"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#C95353] text-white text-sm hover:bg-[#b04444]"
+                  aria-label="Open YouTube channel in new tab"
+                >
+                  <i className="bi-youtube"></i>
+                  nickaferd
+                  <i className="bi-arrow-right"></i>
+                </a>
               </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-2xl font-semibold">Featured YouTube Shorts</h3>
-                  <a
-                    href="https://www.youtube.com/@nickaferd/shorts"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#C95353] text-white text-sm hover:bg-[#b04444]"
-                    aria-label="Open YouTube channel in new tab"
-                  >
-                    <i className="bi-youtube"></i>
-                    Channel
-                    <i className="bi-arrow-right"></i>
-                  </a>
-                </div>
-                <VideoCarousel videos={videos.filter((v) => v.platform === 'youtube')} platform="youtube" />
-              </div>
+              <VideoCarousel videos={videos.filter((v) => v.platform === 'youtube')} platform="youtube" />
             </div>
           </div>
         </section>
