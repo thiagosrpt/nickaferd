@@ -106,11 +106,12 @@ export default function Home() {
           <Audience/>
 
         {/* Content section */}
-        <section id="content" className="section-c py-12">
+        <section id="content" className="section-c py-12 ">
           <div className="container mx-auto px-4">
             <header className="mb-8 text-center">
               <h2 className="text-3xl font-semibold">Content</h2>
-              <p className="mt-2">Featured videos from my channels — swipe to explore.</p>
+              <p className="mt-2">I create high-retention Disney and theme park content that blends humor, insider knowledge, and cinematic storytelling.
+My videos attract highly engaged Disney adults and families who actively plan trips, buy merch, and follow creator recommendations.</p>
             </header>
 
             <div>
@@ -139,6 +140,108 @@ export default function Home() {
                 </a>
               </div>
               <VideoCarousel videos={videos.filter((v) => v.platform === 'youtube')} platform="youtube" />
+            </div>
+          </div>
+        </section>
+
+        {/* NickaFam Community section */}
+        <section id="community" className="section-c py-16 bg-[#f8d481]">
+          <div className="container mx-auto px-4">
+            <header className="mb-8 text-center">
+              <h2 className="text-3xl font-semibold">NickaFam Community</h2>
+              <p className="mt-2 text-gray-600">Join the community and support the channel!</p>
+            </header>
+
+            {/* Quick Links */}
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+              <a
+                href="https://discord.gg/vv3e7gxe"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#5865F2] text-white text-sm hover:bg-[#4752C4]"
+                aria-label="Join Discord Server"
+              >
+                <i className="bi-discord"></i>
+                Join Our Discord
+              </a>
+
+              <a
+                href="https://venmo.com/u/nickaferd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#008CFF] text-white text-sm hover:bg-[#0074D9]"
+                aria-label="Support on Venmo"
+              >
+                <i className="bi-cash-coin"></i>
+                Support on Venmo
+              </a>
+
+              <a
+                href="https://www.amazon.com/hz/wishlist/ls/3TXHGY69U7UMI?ref_=wl_share"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#FF9900] text-white text-sm hover:bg-[#E88B00]"
+                aria-label="View Amazon Wishlist"
+              >
+                <i className="bi-gift"></i>
+                Amazon Wishlist
+              </a>
+            </div>
+
+            {/* Amazon Endorsed Products */}
+            <div className="mt-12">
+              <h3 className="text-2xl font-semibold text-center mb-6">Recommended Products</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                
+                {/* Product 1 - Black Shark Phone Cooler */}
+                <a
+                  href="https://www.amazon.com/dp/B0F5GZ98WC/ref=cm_sw_r_as_gl_api_gl_i_Q5C96KGSW1ZZKNV7X3S5?linkCode=ml1&tag=nickashop-20&linkId=82545bddf0db297abecac899deba72ca"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4 flex flex-col items-center"
+                >
+                  <div className="w-full aspect-square bg-gray-100 rounded-md mb-4 flex items-center justify-center overflow-hidden">
+                    <img
+                      src="https://m.media-amazon.com/images/I/71WlBByy+2L._SX522_.jpg"
+                      alt="Black Shark Magnetic Phone Cooler 5 Pro"
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/300x300.png?text=Black+Shark+Cooler'
+                      }}
+                    />
+                  </div>
+                  <h4 className="font-semibold text-center mb-2 text-sm">Black Shark Magnetic Phone Cooler 5 Pro - RGB Gaming Cooler</h4>
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#FF9900] text-white text-sm">
+                    <i className="bi-amazon"></i>
+                    View on Amazon
+                  </span>
+                </a>
+
+                {/* Product 2 - BEESHOP Portable Charger */}
+                <a
+                  href="https://www.amazon.com/dp/B0DJ11RG1Q/ref=cm_sw_r_as_gl_api_gl_i_RPR4QE7K2Z8DQVD575PH?linkCode=ml1&tag=nickashop-20&linkId=41105b430fa9ce5750d307f154935f23"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4 flex flex-col items-center"
+                >
+                  <div className="w-full aspect-square bg-gray-100 rounded-md mb-4 flex items-center justify-center overflow-hidden">
+                    <img
+                      src="https://m.media-amazon.com/images/I/81Esdhjo2NL._AC_SX679_.jpg"
+                      alt="BEESHOP Portable Charger Power Bank"
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/300x300.png?text=BEESHOP+Charger'
+                      }}
+                    />
+                  </div>
+                  <h4 className="font-semibold text-center mb-2 text-sm">BEESHOP 37000mAh Portable Charger - Fast Charging Power Bank</h4>
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#FF9900] text-white text-sm">
+                    <i className="bi-amazon"></i>
+                    View on Amazon
+                  </span>
+                </a>
+
+              </div>
             </div>
           </div>
         </section>
@@ -172,6 +275,17 @@ export default function Home() {
                 <i className="bi-envelope"></i>
                 nickaferdd@gmail.com
               </a>
+            </div>
+
+            <div className="mt-8 text-center">
+              <p className="text-sm text-gray-600 mb-2">Or send mail to:</p>
+              <div className="inline-flex items-start gap-2 text-gray-800">
+                <i className="bi-mailbox mt-0.5"></i>
+                <div className="text-left">
+                  <p>P.O. Box 570485</p>
+                  <p>Kissimmee, FL 34747</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>

@@ -31,6 +31,7 @@ export default function Header() {
           <a href="#top" className="hover:underline">Home</a>
           <a href="#content" className="hover:underline">Content</a>
           <a href="#audience" className="hover:underline">Audience</a>
+          <a href="#community" className="hover:underline">Community</a>
           <a href="#contact" className="hover:underline">Contact</a>
         </nav>
 
@@ -71,6 +72,7 @@ export default function Header() {
                 <a href="#top" onClick={() => setOpen(false)} className="font-medium">Home</a>
                 <a href="#content" onClick={() => setOpen(false)} className="font-medium">Content</a>
                 <a href="#audience" onClick={() => setOpen(false)} className="font-medium">Audience</a>
+                <a href="#community" onClick={() => setOpen(false)} className="font-medium">Community</a>
                 <a href="#contact" onClick={() => setOpen(false)} className="font-medium">Contact</a>
               </nav>
             </div>

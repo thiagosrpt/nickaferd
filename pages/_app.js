@@ -55,6 +55,15 @@ export default function MyApp({ Component, pageProps }) {
             "https://www.youtube.com/@nickaferd"
           ]
         }) }} />
+
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CCWV175VHN"></script>
+        <script dangerouslySetInnerHTML={{ __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-CCWV175VHN');
+        ` }} />
       </Head>
       <Header />
       <Component {...pageProps} />

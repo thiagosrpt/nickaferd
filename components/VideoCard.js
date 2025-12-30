@@ -1,6 +1,24 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function VideoCard({ video }) {
+  const [enableVideo, setEnableVideo] = useState(false)
+
+  const handleOverlayClick = () => {
+    setEnableVideo(true)
+    
+    // Play the video when overlay is clicked
+    setTimeout(() => {
+      const iframe = Array.from(document.querySelectorAll('iframe')).find((f) => f.src && f.src.includes(video.id))
+      if (iframe) {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*')
+        } catch (e) {
+          // ignore cross-origin errors
+        }
+      }
+    }, 100)
+  }
+
   useEffect(() => {
     // Ensure YouTube embeds explicitly request paused start
     if (video.platform === 'youtube') {
@@ -50,6 +68,14 @@ export default function VideoCard({ video }) {
                     allowFullScreen
                     className="absolute top-0 left-0 w-full h-full"
                   />
+                  {!enableVideo && (
+                    <div
+                      onClick={handleOverlayClick}
+                      className="absolute inset-0 z-10 cursor-pointer"
+                      style={{ background: 'transparent' }}
+                      aria-label="Click to play video"
+                    />
+                  )}
                 </div>
           ) : (
             <a
