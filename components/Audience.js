@@ -235,11 +235,12 @@ export default function Audience() {
         "tiktok-audience": {
           charts: ["tiktokGender", "tiktokAudience", "tiktokAge"],
           numbers: [
-            ['tiktokFollowers', 46000, 1400, 'compact'],
-            ['tiktokViews', 7000000, 1500, 'compact'],
-            ['tiktokEngagement', 40, 1000, 'integer'],
-            ['tiktokDailyLiveWatchers', 300, 1000, 'compact'],
-            ['tiktokActiveViewers', 25000, 1500, 'compact'],
+            ['tiktokFollowers', 50000, 1400, 'compact'],
+            ['tiktokViews', 8700000, 1500, 'compact'],
+            ['tiktokEngagement', 50, 1000, 'integer'],
+            ['tiktokDailyLiveWatchers', 350, 1000, 'compact'],
+            ['tiktokActiveViewers', 33000, 1500, 'compact'],
+            ['tiktokAvgMonthlyUniqueViewers', 800000, 1400, 'compact'],
             ['tiktokPeakConcurrentViewers', 7200, 1000, 'compact'],
           ],
         },
@@ -248,7 +249,7 @@ export default function Audience() {
           numbers: [
             ["youtubeFollowers", 1400, 1200, "compact"],
             ["youtubeViews", 2300000, 1400, "compact"],
-            ["youtubeEngagement", 50, 1000, "integer"],
+            ["youtubeEngagement", 60, 1000, "integer"],
           ],
         },
       };
@@ -287,8 +288,9 @@ export default function Audience() {
             item.chart.update({ duration: 900, easing: "easeInOutCubic" });
           });
           // fallback numbers
-          animateNumber("tiktokDailyLiveWatchers", 300, 1000, "compact");
-          animateNumber("tiktokActiveViewers", 25000, 1500, "compact");
+          animateNumber("tiktokDailyLiveWatchers", 350, 1000, "compact");
+          animateNumber("tiktokActiveViewers", 33000, 1500, "compact");
+          animateNumber("tiktokAvgMonthlyUniqueViewers", 45000, 1400, "compact");
           animateNumber("tiktokPeakConcurrentViewers", 7200, 1000, "compact");
 
           animateNumber("tiktokFollowers", 46000, 1400, "compact");
@@ -407,30 +409,39 @@ export default function Audience() {
             </h2>
 
             {/* Top Live Metrics row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <div className="text-center">
-                <div className="text-5xl font-extrabold text-[#06b6d4]">
+                <div className="text-4xl font-extrabold text-[#06b6d4]">
                   <span id="tiktokDailyLiveWatchers">0</span>+
                 </div>
-                <div className="text-md text-gray-600">
-                  Avg Daily Live Viewers
+                <div className="text-sm text-gray-600">
+                  Daily Avg Active Live Viewers
                 </div>
               </div>
 
               <div className="text-center">
-                <div className="text-5xl font-extrabold text-[#06b6d4]">
+                <div className="text-4xl font-extrabold text-[#06b6d4]">
                   <span id="tiktokActiveViewers">0</span>
                 </div>
-                <div className="text-md text-gray-600">
-                  Monthly Live Viewers
+                <div className="text-sm text-gray-600">
+                  Monthly Active Live Viewers<sup className="text-[#06b6d4]">*</sup>
                 </div>
               </div>
 
               <div className="text-center">
-                <div className="text-5xl font-extrabold text-[#06b6d4]">
+                <div className="text-4xl font-extrabold text-[#06b6d4]">
+                  <span id="tiktokAvgMonthlyUniqueViewers">0</span>
+                </div>
+                <div className="text-sm text-gray-600">
+                  Avg Monthly Unique Live Viewers<sup className="text-[#06b6d4]">†</sup>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <div className="text-4xl font-extrabold text-[#06b6d4]">
                   <span id="tiktokPeakConcurrentViewers">0</span>
                 </div>
-                <div className="text-md text-gray-600">
+                <div className="text-sm text-gray-600">
                   Peak Concurrent Live Viewers
                 </div>
               </div>
@@ -449,19 +460,19 @@ export default function Audience() {
                 <div className="text-5xl font-extrabold text-[#06b6d4]">
                   <span id="tiktokViews">0</span>
                 </div>
-                <div className="text-md text-gray-600">Views</div>
+                <div className="text-md text-gray-600">Video Views</div>
               </div>
 
               <div className="text-center">
                 <div className="text-5xl font-extrabold text-[#06b6d4]">
                   <span id="tiktokEngagement">0</span>%
                 </div>
-                <div className="text-md text-gray-600">Engaged Views</div>
+                <div className="text-md text-gray-600">Engaged Video Views</div>
               </div>
             </div>
 
             {/* Demographics section */}
-            <div>
+            <div className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <strong>Age</strong>
@@ -507,6 +518,15 @@ export default function Audience() {
                 </li>
                 <li className="badge badge--tiktok">Entertainment</li>
               </ul>
+            </div>
+            {/* Footnotes */}
+            <div className="mt-6 pt-4 border-t border-gray-200 text-sm text-gray-600 space-y-2">
+              <p>
+                <sup className="text-[#06b6d4]">*</sup> <strong>Average Active Live Viewers:</strong> The steady average of people tuned in throughout the stream session.
+              </p>
+              <p>
+                <sup className="text-[#06b6d4]">†</sup> <strong>Unique Live Viewers:</strong> The total number of distinct individual accounts that joined my stream.
+              </p>
             </div>
           </article>
 
